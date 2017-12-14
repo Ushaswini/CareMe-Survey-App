@@ -7,9 +7,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace Homework_04.Controllers
+namespace Homework05.MVC_Controllers
 {
-    [AuthorizationFilter]
+    [AuthorizationFilter("StudyCoordinator")]
     public class SurveyController : Controller
     {
         public ActionResult Manage()
