@@ -42,9 +42,9 @@ namespace Homework05.Models
         public string QuestionText { get; set; }
         public QuestionType QuestionType { get; set; }
         public string Options { get; set; }
-        public double Minimum { get; set; }
-        public double Maximum { get; set; }
-        public double StepSize { get; set; }
+        public int Minimum { get; set; }
+        public int Maximum { get; set; }
+        public int StepSize { get; set; }
 
     }
 

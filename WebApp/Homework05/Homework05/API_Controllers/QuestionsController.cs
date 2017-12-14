@@ -80,6 +80,11 @@ namespace Homework05.API_Controllers
                 return BadRequest(ModelState);
             }
 
+            if (hasError(question))
+            {
+                return BadRequest(ModelState);
+            }
+
             db.Questions.Add(question);
 
             try
@@ -99,6 +104,48 @@ namespace Homework05.API_Controllers
             }
 
             return CreatedAtRoute("DefaultApi", new { id = question.Id }, question);
+        }
+
+        private bool hasError(Question question) {
+
+            bool hasError = false;
+
+            switch (question.QuestionType.ToString()) {
+                case "Scale":
+                    if (question.Minimum < 0)
+                    {
+                        ModelState.AddModelError("Minimum", "Min should be greater than zero");
+                        hasError = true;
+                    }
+                    if (question.Maximum < 0)
+                    {
+                        ModelState.AddModelError("Maximum", "Max should be greater than zero");
+                        hasError = true;
+                    }
+                    if (question.Maximum < question.Minimum)
+                    {
+                        ModelState.AddModelError("StepSize", "Max should be greater than Min");
+                        hasError = true;
+                    }
+                    if (question.StepSize < question.Minimum && question.StepSize > question.Maximum)
+                    {
+                        ModelState.AddModelError("StepSize", "Step Size should be in the range of Min and Max");
+                        hasError = true;
+
+                    }
+                    if (((question.Maximum - question.Minimum) / question.StepSize) > 10)
+                    {
+                        ModelState.AddModelError("StepSize", "No of steps should be less than 10");
+                        hasError = true;
+                    }
+
+                    break;
+            }
+
+            ModelState.AddModelError("","");
+
+
+            return hasError;
         }
 
         // DELETE: api/Questions/5

@@ -147,16 +147,21 @@
     }
     $('#questionType').on('change', function () {
         console.log("in change");
-        //alert(this.value);
-        //alert($(this).find(":selected").val());
         if (this.value == 0) {
             $('#options').css('visibility', 'hidden');
+            $('#likeScaleProperties').css('visibility', 'hidden');
         }
         if (this.value == 1) {
             $('#options').css('visibility', 'visible');
+            $('#likeScaleProperties').css('visibility', 'hidden');
         }
         if (this.value == 2) {
             $('#options').css('visibility', 'hidden');
+            $('#likeScaleProperties').css('visibility', 'visible');
+        }
+        if (this.value == 3) {
+            $('#options').css('visibility', 'hidden');
+            $('#likeScaleProperties').css('visibility', 'hidden');
         }
     })
 
@@ -268,6 +273,10 @@
         self.userEmail = ko.observable();
         self.selectedStudyGroup = ko.observable();
         self.selectedStudyGroupForSurvey = ko.observable();
+        self.options = ko.observable();
+        self.minBound = ko.observable();
+        self.maxBound = ko.observable();
+        self.interval = ko.observable();
 
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
@@ -345,6 +354,9 @@
                 QuestionText: self.questionText(),
                 QuestionType: $('#questionType').val(),
                 Options: self.options(),
+                Minimum: self.minBound(),
+                Maximum: self.options(),
+                StepSize: self.interval(),
                 QuestionId: guid()
 
             };

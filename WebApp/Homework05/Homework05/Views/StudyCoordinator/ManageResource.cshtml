@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="col" style="float:right; margin:10px">
-            <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#myModal">Add Question</button>
+            <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#myModal">Add Item</button>
 
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
@@ -16,7 +16,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Add Question</h4>
+                            <h4 class="modal-title">Add Item</h4>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -40,18 +40,27 @@
                                             <option selected disabled>Question type</option>
                                             <option value="0">TextEntry</option>
                                             <option value="1">Choice</option>
-                                            <option value="2">Message</option>
+                                            <option value="2">Scale</option>
+                                            <option value="1">Info</option>
                                         </select>
                                     </div>
                                     <div class="col" style="float:left; margin:10px;">
                                         <div id="options" class="col" style="visibility:hidden">
                                             <input type="text" data-bind="value: options" class="form-control" placeholder="Comma seperated options">
                                         </div>
-
-
-
+                                        <div id="likeScaleProperties" class="col" style="visibility:hidden">
+                                            <input type="text" data-bind="value: minBound" class="form-control" placeholder="Minimum bound">
+                                            <input type="text" data-bind="value: maxBound" class="form-control" placeholder="Maximum bound">
+                                            <input type="text" data-bind="value: interval" class="form-control" placeholder="step size">
+                                        </div>
                                     </div>
-
+                                    <div class="col" style="float:left; margin:10px;">
+                                        <div id="likeScaleProperties" class="col" style="visibility:hidden">
+                                            <input type="text" data-bind="value: minBound" class="form-control" placeholder="Minimum bound">
+                                            <input type="text" data-bind="value: maxBound" class="form-control" placeholder="Maximum bound">
+                                            <input type="text" data-bind="value: interval" class="form-control" placeholder="step size">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -69,15 +78,13 @@
 
 
     <div class="col-sm-12" style="float:left">
-        <h3 style="margin-bottom:20px;margin-top:10px;float:left">Questions already created</h3>
+        <h3 style="margin-bottom:20px;margin-top:10px;float:left">Resources already created</h3>
         <table class="table table-hover table-bordered table-striped" id="questionsTable">
             <thead>
                 <tr>
-                    <th>Question Text</th>
-
+                    <th>Questions Text</th>
                 </tr>
             </thead>
-
         </table>
     </div>
 
