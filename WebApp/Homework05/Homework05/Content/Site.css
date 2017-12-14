@@ -1,0 +1,55 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+/*Edited*/
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+html, body {
+    height: 100%;
+}
+
+#wrapper {
+    min-height: 100%;
+}
+
+#page-content-wrapper {
+    overflow: auto;
+    padding-bottom: 150px; /* this needs to be bigger than footer height*/
+}
+
+
+.footer {
+    position: relative;
+    margin-top: -150px; /* negative value of footer height */
+    height: 150px;
+    clear: both;
+    padding-top: 20px;
+}
+
+.navbar-style {
+    background-color: #312A25;
+    border-color: #FFFFFF;
+    color: #999999 !important;
+}
+
+.navbar-style a {
+    color: #999999 !important;
+}
+
+.btn-style {
+    background-color: #312A25;
+    border-color: #FFFFFF;
+    color: #999999 !important;
+}

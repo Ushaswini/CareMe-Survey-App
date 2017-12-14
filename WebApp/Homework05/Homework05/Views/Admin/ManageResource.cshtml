@@ -1,0 +1,86 @@
+﻿
+@section Scripts {
+    @Scripts.Render("~/bundles/Dashboard")
+    @Scripts.Render("~/bundles/auth")
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col" style="float:right; margin:10px">
+            <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#myModal">Add Question</button>
+
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add Question</h4>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label data-bind="value: result" />
+                            </div>
+                            <div class="form-group error-messages" data-bind="foreach: errors">
+                                <p data-bind="text: $data" />
+                            </div>
+                        </div>
+
+                        <form data-bind="submit:AddQuestion">
+                            <div class="modal-body" style="float:left; clear:both;">
+
+                                <div class="form-row">
+                                    <div class="col" style="float:left; margin:10px">
+                                        <input type="text" data-bind="value: questionText" class="form-control" placeholder="Question Text">
+                                    </div>
+
+                                    <div class="col" style="float:left; margin:10px;">
+                                        <select id="questionType" class="form-control">
+                                            <option selected disabled>Question type</option>
+                                            <option value="0">TextEntry</option>
+                                            <option value="1">Choice</option>
+                                            <option value="2">Message</option>
+                                        </select>
+                                    </div>
+                                    <div class="col" style="float:left; margin:10px;">
+                                        <div id="options" class="col" style="visibility:hidden">
+                                            <input type="text" data-bind="value: options" class="form-control" placeholder="Comma seperated options">
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-default">Add</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-12" style="float:left">
+        <h3 style="margin-bottom:20px;margin-top:10px;float:left">Questions already created</h3>
+        <table class="table table-hover table-bordered table-striped" id="questionsTable">
+            <thead>
+                <tr>
+                    <th>Question Text</th>
+
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+
+</div>
+ 
+

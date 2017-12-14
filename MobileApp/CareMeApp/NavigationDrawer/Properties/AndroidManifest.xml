@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="edu.uncc.homework4" android:installLocation="auto">
+	<uses-sdk />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <permission android:name="edu.uncc.homework4.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="edu.uncc.homework4.permission.C2D_MESSAGE" />
+  
+	<application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
+    <receiver android:name="com.google.android.gms.gcm.GcmReceiver"
+              android:exported="true"
+              android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <category android:name="edu.uncc.homework4" />
+      </intent-filter>
+    </receiver>
+
+    <service
+        android:name="edu.uncc.homework4.MyGcmListenerService"
+        android:exported="false" >
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+      </intent-filter>
+    </service>
+    <service
+        android:name="edu.uncc.homework4.MyInstanceIDListenerService"
+        android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.android.gms.iid.InstanceID"/>
+      </intent-filter>
+    </service>
+  </application>
+</manifest>

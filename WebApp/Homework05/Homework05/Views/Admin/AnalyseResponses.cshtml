@@ -1,0 +1,22 @@
+﻿
+@section Scripts {
+    @Scripts.Render("~/bundles/Dashboard")
+    @Scripts.Render("~/bundles/auth")
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label data-bind="value: result" />
+        </div>
+        <div class="form-group error-messages" data-bind="foreach: errors">
+            <p data-bind="text: $data" />
+        </div>
+    </div>
+    <div class="col-sm-12" style="float:left">
+        <h3>List surveys</h3>
+        <div class="col-sm-12" style="float:left">
+            <button style="float:left;margin-top:10px;height:34px;margin-bottom:10px" id="navigateToSurveyManager">Go to Survey Manager</button>
+        </div>
+    </div>
+</div>

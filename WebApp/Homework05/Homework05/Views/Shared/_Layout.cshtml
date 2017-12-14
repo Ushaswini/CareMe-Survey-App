@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <SCRIPT type="text/javascript">
+        window.history.forward();
+        function noBack() { window.history.forward(); }
+       
+    </SCRIPT>
+</head>
+<body onload="noBack();"
+      onpageshow="if (event.persisted) noBack();" 
+      onunload="" style="background-color:#E5E4E2">
+    <div class="navbar navbar-style navbar-fixed-top">
+        @if (Session["accessToken"] != null)
+        {
+            <div id="lblGreetings" class="navbar-header" style="padding-left:30px">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Welcome, Admin", "Dashboard", "Admin", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+        }    
+        
+    </div>
+    
+
+    <div id="wrapper">
+        <!-- Sidebar -->
+        @if (Session["accessToken"] != null)
+        {
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav" style="margin-left:0;">
+                    <li class="sidebar-brand">
+                        <a href="#menu-toggle" id="menu-toggle" style="margin-top:20px;float:right;"> <i class="glyphicon glyphicon-align-justify" style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="active">
+                        <a href="/Admin/Dashboard" class="ach"><i class="glyphicon glyphicon-dashboard" aria-hidden="true"> </i> <span style="margin-left:10px;">Dashboard</span>  </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/ManageResource" class="ach"> <i class="glyphicon glyphicon-book" aria-hidden="true"> </i> <span style="margin-left:10px;">Manage Resource</span> </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/PublishSurveys" class="ach"> <i class="glyphicon glyphicon-bullhorn" aria-hidden="true"> </i> <span style="margin-left:10px;">Publish Surveys</span> </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/AnalyseResponses" class="ach"> <i class="glyphicon glyphicon-stats" aria-hidden="true"> </i> <span style="margin-left:10px;">Analyse Responses</span> </a>
+                    </li>
+                </ul>
+                <ul class="sidebar-nav" style="margin-left:0;bottom:100px !important; top:auto !important">
+                    <li>
+                        <hr style="margin-left:28px" />
+                        <a href="#" id="logout"> <i class="glyphicon glyphicon-log-out" aria-hidden="true"> </i> <span style="margin-left:10px;">Logout</span> </a>
+                    </li>
+
+                </ul>
+            </div>
+        }
+        
+        <div id="page-content-wrapper" class="container clear-top body-content">
+            @RenderBody()
+        </div>
+    </div>
+  
+    <footer class="pull-right" style="padding-right:100px;">
+        <hr />
+        <p>&copy; @DateTime.Now.Year - Group5</p>
+    </footer>
+    <script type="text/javascript">
+
+        var yourApp = yourApp || {};
+        yourApp.Urls = yourApp.Urls || {};
+        yourApp.Urls.baseUrl = '@Url.Content("~")';
+        yourApp.Urls.surveyManageUrl = '@Url.Action("Manage","Survey")';
+        yourApp.Urls.responseManageUrl = '@Url.Action("Index","Response")';
+        yourApp.Urls.homeScreenUrl = '@Url.Action("Index","Home")';
+        yourApp.Urls.userMessagesUrl = '@Url.Action("Index","User")';
+
+    </script>
+
+    
+
+   
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/datatable")
+        @RenderSection("scripts", required: false)
+    <script>
+        $('.sidebar-nav li').on('click', function () {
+            console.log('on click');
+            $('.sidebar-nav li').removeClass('active');
+            $(this).addClass('active');
+        });
+    </script>
+    </BODY>
+</html>

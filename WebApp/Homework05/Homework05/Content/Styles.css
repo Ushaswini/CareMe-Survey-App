@@ -1,0 +1,337 @@
+﻿@font-face {
+    font-family: "icomoon";
+    src: url("fonts/icomoon.eot?vv64xh");
+    src: url("fonts/icomoon.eot?#iefixvv64xh") format("embedded-opentype"), url("fonts/icomoon.woff?vv64xh") format("woff"), url("fonts/icomoon.ttf?vv64xh") format("truetype"), url("fonts/icomoon.svg?vv64xh#icomoon") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    background-image: url("pattern.png");
+    color: #dddddd;
+    letter-spacing: 0.012em;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+#conmutador-wrapper {
+    position: fixed;
+    background-color: #272727;
+    top: 0;
+    left: 0;
+    height: 55px;
+    border-top: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+    width: 100%;
+}
+
+    #conmutador-wrapper * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+.conmutador {
+    height: 100%;
+}
+
+#preview {
+    display: block;
+    margin: 55px auto 0 auto;
+    padding: 0;
+}
+
+.phone-view {
+    max-width: 480px;
+}
+
+.tablet-view {
+    max-width: 768px;
+}
+
+.conmutador-separator {
+    width: 30px;
+    height: 55px;
+    border-left: 1px solid #1a1a1a;
+}
+
+.conmutador-icon {
+    text-decoration: none;
+    color: #efefef;
+    line-height: 55px;
+    padding: 0 30px;
+    border-left: 1px solid #1a1a1a;
+    border-right: 0;
+    font-size: 24px;
+    transition: background-color 0.1s ease;
+}
+
+    .conmutador-icon:hover {
+        color: white;
+        background-color: #5fcf80;
+    }
+
+    .conmutador-icon.conmutador-icon-sm {
+        padding: 0 20px;
+    }
+
+.button-close {
+    font-size: 34px;
+}
+
+.logo {
+    font-size: 20px;
+    line-height: 55px;
+    font-weight: bold;
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 30px;
+    border-right: 1px solid #1a1a1a;
+    border-left: 0;
+}
+
+    .logo a {
+        padding-top: 6.25px;
+        display: block;
+        height: 30px;
+        color: #efefef;
+        text-decoration: none;
+    }
+
+        .logo a img {
+            display: inline-block;
+            height: 30px;
+            width: auto;
+        }
+
+#temas {
+    position: relative;
+    height: 55px;
+    min-width: 270px;
+    border-right: 1px solid #1a1a1a;
+    border-left: 0;
+    font-size: 18px;
+    line-height: 55px;
+    transition: background-color 0.1s ease;
+    float: left;
+}
+
+    #temas:hover,
+    #temas.open {
+        color: white;
+        background-color: #5fcf80;
+    }
+
+    #temas > .tipo {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+    }
+
+#selector {
+    position: relative;
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 100px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+    #selector::-moz-selection, #selector::selection {
+        background: transparent;
+        color: #5fcf80;
+    }
+
+#selector-content {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 10px;
+    width: 100%;
+    background-color: #272727;
+}
+
+    #selector-content li > a {
+        display: block;
+        font-size: 12px;
+        cursor: pointer;
+        line-height: 18px;
+        border-bottom: 1px solid #1a1a1a;
+        padding: 10px 0;
+        color: #efefef;
+    }
+
+        #selector-content li > a:hover {
+            color: white;
+        }
+
+            #selector-content li > a:hover > .tipo {
+                background-color: #5fcf80;
+                -moz-transition: background-color 0.2s ease;
+                -o-transition: background-color 0.2s ease;
+                -webkit-transition: background-color 0.2s ease;
+                -ms-transition: background-color 0.2s ease;
+                transition: background-color 0.2s ease;
+            }
+
+    #selector-content li:last-child > a {
+        border-bottom-width: 0;
+    }
+
+.tipo {
+    font-size: 10px;
+    line-height: 1;
+    text-transform: uppercase;
+    padding: 4px;
+    width: 60px;
+    text-align: center;
+    background-color: #2d2d2d;
+    -moz-transition: background-color 0.2s ease;
+    -o-transition: background-color 0.2s ease;
+    -webkit-transition: background-color 0.2s ease;
+    -ms-transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+#selector-content {
+    display: none;
+}
+
+.open #selector-content {
+    display: block;
+    -webkit-animation: fade 0.2s ease;
+    -moz-animation: fade 0.2s ease;
+    animation: fade 0.2s ease;
+}
+
+@-webkit-keyframes fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.cf {
+    *zoom: 1;
+}
+
+    .cf:before, .cf:after {
+        display: table;
+        content: "";
+        line-height: 0;
+    }
+
+    .cf:after {
+        clear: both;
+    }
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: "icomoon";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-close:before {
+    content: "\e600";
+}
+
+.icon-plus:before {
+    content: "\e601";
+}
+
+.icon-download:before {
+    content: "\e602";
+}
+
+.icon-tablet:before {
+    content: "\e603";
+}
+
+.icon-phone:before {
+    content: "\e604";
+}
+
+.icon-desktop:before {
+    content: "\e605";
+}
+
+.icon-monitor:before {
+    content: "\e021";
+}
+
+@media (max-width: 960px) {
+    .conmutador-separator,
+    .conmutador-icon {
+        display: none;
+    }
+
+    .button-purchase,
+    .button-close {
+        display: block;
+    }
+}
+
+@media (max-width: 580px) {
+    #temas {
+        display: none;
+    }
+
+    .button-purchase,
+    .button-close {
+        padding: 0 20px;
+    }
+}
