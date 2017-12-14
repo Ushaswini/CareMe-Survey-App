@@ -177,42 +177,60 @@ namespace Homework05.API_Controllers
         {
             List<ResponseDTO> responses = new List<ResponseDTO>();
 
-            var surveysForCoordinator = from s in db.X_Coordinator_Groups
+            var idsOfSurveysForCoordinator = from s in db.X_Coordinator_Groups
 
-                                        join g in db.X_Survey_Groups.Include("Survey") on s.Id equals g.StudyGroupId
+                                             join g in db.X_Survey_Groups.Include("Survey") on s.Id equals g.StudyGroupId
 
-                                        join r in db.X_User_Groups.Include("User") on g.StudyGroupId equals r.StudyGroupId
+                                             where s.CoordinatorId.Equals(coordinatorId)
 
-                                        where s.CoordinatorId.Equals(coordinatorId)
+                                             select g.Id;
 
-                                        select new { s, g, r };
-
-            foreach (var user in surveysForCoordinator.ToList())
+            foreach (var surveyId in idsOfSurveysForCoordinator.ToList())
             {
-                var responsesForQuestionsInSurvey = db.SurveyResponses
-                                                         .Where(r => r.SurveyId == user.g.SurveyId)
-                                                         .Include(r => r.Question)
-                                                         .Select(r => new QuestionResponseDTO
-                                                         {
-                                                             ResponseReceivedTime = r.ResponseReceivedTime,
-                                                             ResponseText = r.ResponseText,
-                                                             QuestionText = r.Question.QuestionText,
-                                                             QuestionId = r.Question.Id,
-                                                             QuestionType = r.Question.QuestionType,
-                                                             Options = r.Question.Options
-                                                         })
-                                                         .ToList();
-
-                var responseDTO = new ResponseDTO
+                var responseList = from response in db.SurveyResponses.Include("Survey").Include("Question").Include("User")
+                                   join question in db.Questions on response.QuestionId equals question.Id
+                                   join survey in db.X_Survey_Groups.Include("Survey").Include("StudyGroup") on response.SurveyId equals survey.Id
+                                   join study in db.StudyGroups on survey.StudyGroupId equals study.Id
+                                   join user in db.Users on response.UserId equals user.Id
+                                   where response.SurveyId == surveyId
+                                   select new { response, question, survey, surveyObj = survey.Survey, study, user }
+                                       ;
+                var groupedResponses = responseList.GroupBy(p => p.response.SurveyId, p => new { p.response, p.question, p.survey, p.surveyObj, p.study, p.user }, (key, g) => new { SurveyId = key, Value = g.ToList() }).ToList();
+                List<QuestionResponseDTO> questions = new List<QuestionResponseDTO>();
+                foreach (var r in groupedResponses)
                 {
-                    SurveyId = user.g.SurveyId,
-                    UserName = user.r.User.UserName,
-                    QuestionResponses = responsesForQuestionsInSurvey
-                };
+                    questions.Clear();
+                    foreach (var p in r.Value.ToList())
+                    {
 
-                responses.Add(responseDTO);
+                        var questionDTO = new QuestionResponseDTO
+                        {
+                            ResponseReceivedTime = p.response.ResponseReceivedTime,
+                            ResponseText = p.response.ResponseText,
+                            QuestionText = p.question.QuestionText,
+                            QuestionId = p.question.Id,
+                            QuestionType = p.question.QuestionType,
+                            QuestionFrequency = p.survey.FrequencyOfNotifications + "",
+                            Options = p.question.Options,
+
+                        };
+                        questions.Add(questionDTO);
+
+                    }
+
+                    var responseDTO = new ResponseDTO
+                    {
+                        SurveyId = r.Value.ElementAt(0).response.SurveyId,
+                        SurveyName = r.Value.ElementAt(0).surveyObj.SurveyName,
+                        UserName = r.Value.ElementAt(0).user.UserName,
+                        QuestionResponses = questions,
+                        StudyGroupName = r.Value.ElementAt(0).study.StudyGroupName
+
+                    };
+
+                    responses.Add(responseDTO);
+                }
             }
-
             return responses;
         }
 
