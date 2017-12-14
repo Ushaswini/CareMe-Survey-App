@@ -42,43 +42,53 @@ namespace Homework_04.Controllers
 
         public async Task<ActionResult> LoginAsync(LoginViewModel Vm)
         {
-            if (Vm.UserName.Equals("Admin"))
+
+            using (var client = new HttpClient())
             {
-                using (var client = new HttpClient())
+                Vm.GrantType = "password";
+                try
                 {
-                    Vm.GrantType = "password";
+                    HttpResponseMessage result = await client.PostAsync("http://caremesurvey-nc.azurewebsites.net/oauth2/token", new FormUrlEncodedContent(Vm.ToDict()));
 
-                    try
+                    if (result.IsSuccessStatusCode)
                     {
-                        HttpResponseMessage result = await client.PostAsync("http://caremesurvey-nc.azurewebsites.net/oauth2/token", new FormUrlEncodedContent(Vm.ToDict()));
+                        string jsonResult = await result.Content.ReadAsStringAsync();
+                        var resultObject = JsonConvert.DeserializeObject<TokenModel>(jsonResult);
 
-                        if (result.IsSuccessStatusCode)
+                        UserInfoViewModel userinfo = await GetUserInfo(resultObject.Access_Token);
+
+                        if (userinfo.IsAdmin() || userinfo.IsStudyCoordinator())
                         {
-                            string jsonResult = await result.Content.ReadAsStringAsync();
-                            var resultObject = JsonConvert.DeserializeObject<TokenModel>(jsonResult);
+                            resultObject.UserRole = userinfo.IsAdmin() ? "Admin" : "StudyCoordinator";
+
                             Session["accessToken"] = resultObject.Access_Token;
+                            Session["userRole"] = resultObject.UserRole;
+                            Session["userName"] = userinfo.UserName;
                             FormsAuthentication.SetAuthCookie(resultObject.Access_Token, false);
-                            return Json(new { success = true, responseText = "Login successful",resultObject });
-                           // return RedirectToAction("Dashboard", "Admin");
+                            return Json(new { success = true, responseText = "Login successful", resultObject });
                         }
                         else
                         {
-                            ModelState.AddModelError("LoginError", "Wrong credentials!");
-                            return Json(new { success = false, responseText = "Wrong credentials!" });
+                            ModelState.AddModelError("UnauthorizedError", "Only Admin or Coordinator can login!");
+                            return Json(new { success = false, responseText = "Only Admin or Coordinator can login!" });
                         }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        ModelState.AddModelError("LoginError", e.Message);
-                        return Json(new { success = false, responseText = e.Message });
+                        ModelState.AddModelError("LoginError", "Wrong credentials!");
+                        return Json(new { success = false, responseText = "Wrong credentials!" });
                     }
                 }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("LoginError", e.Message);
+                    return Json(new { success = false, responseText = e.Message });
+                }
+
+
             }
-            else
-            {
-                ModelState.AddModelError("UnauthorizedError", "Only Admin can login!");
-                return Json(new { success = false, responseText = "Only Admin can login!" });
-            }
+
+
         }
 
         public async Task<ActionResult> LogOffAsync()
@@ -107,6 +117,20 @@ namespace Homework_04.Controllers
             }
            // AuthenticationManager.SignOut();
             
+        }
+
+        private async Task<UserInfoViewModel> GetUserInfo(string token)
+        {
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage userInfoJson = await client.GetAsync("http://caremesurvey-nc.azurewebsites.net/api/Account/UserInfo?token=" + token);
+                if (userInfoJson.IsSuccessStatusCode)
+                {
+                    string userInfoJsonResult = await userInfoJson.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<UserInfoViewModel>(userInfoJsonResult);
+                }
+            }
+            return null;
         }
     }
 }

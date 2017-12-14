@@ -33,7 +33,6 @@
     }
 
     self.login = function () {
-        console.log('login clicked')
         var loginData = {
             grant_type: 'password',
             username: self.loginEmail(),
@@ -44,11 +43,9 @@
             url: '/Home/LoginAsync',
             data: loginData
         }).done(function (data) {
-            console.log(data);
             if (data.success == true) {
-                console.log(data.resultObject.Access_Token);
                 sessionStorage.setItem(tokenKey, data.resultObject.Access_Token);
-                window.location.href = 'Admin/Dashboard';
+                window.location.href = data.resultObject.UserRole + '/Dashboard';
             } else {
                 self.errors.removeAll();
                 self.errors.push(data.responseText);
@@ -57,61 +54,12 @@
         }).fail(showError);
     }
     
-    /*self.login = function () {
-        self.result('');
-        self.errors.removeAll();
-        console.log("login clicked");
-        $.ajax({
-            type: 'GET',
-            url: 'api/Account/UserIsAdim?roleName=Admin&userName=' + self.loginEmail()
-        }).done(function (data) {
+    function error (error) {
+        //self.result('Only admin can login');
+        self.errors.push('Only Admin  can login!!');
+        console.log("user login");
+    }
 
-            console.log(data);
-            var loginData = {
-                grant_type: 'password',
-                username: self.loginEmail(),
-                password: self.loginPassword()
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: '/oauth2/token',
-                data: loginData
-            }).done(function (data) {
-                self.user(data.userName);
-                console.log(data.access_token);
-                // Cache the access token in session storage.
-                sessionStorage.setItem(tokenKey, data.access_token);
-                window.location.href = 'Admin/Dashboard';
-                // $("#sidebar-wrapper").css('display', 'block');
-                //$("#lblGreetings").css('display', 'block');
-            }).fail(showError);
-        }).fail(showError);
-    }*/
-        function error (error) {
-            //self.result('Only admin can login');
-            self.errors.push('Only Admin  can login!!');
-            console.log("user login");
-        }
-
-       /* var loginData = {
-            grant_type: 'password',
-            username: self.loginEmail(),
-            password: self.loginPassword()
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: '/oauth2/token',
-            data: loginData
-        }).done(function (data) {
-            self.user(data.userName);
-            console.log(data.access_token);
-            // Cache the access token in session storage.
-            sessionStorage.setItem(tokenKey, data.access_token);            
-            window.location.href = 'Admin/Dashboard';
-        }).fail(showError);
-    }*/
 }
 
 var app = new ViewModel();

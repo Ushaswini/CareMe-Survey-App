@@ -25,7 +25,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Welcome, Admin", "Dashboard", "Admin", new { area = "" }, new { @class = "navbar-brand" })
+                Welcome, @Session["userName"].ToString()
+                @*@Html.ActionLink("Welcome, Admin", "Dashboard", "Admin", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
         }    
         
