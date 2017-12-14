@@ -81,6 +81,31 @@ namespace Homework05.API_Controllers
 
             return roleUsers;
         }
+
+        [Route("Coordinator")]
+        public IList<UserDTO>GetUsersForSC(string coordinatorId)
+        {
+            List<UserDTO> users = new List<UserDTO>();
+
+            var list = from user in db.Users
+                       join user_group in db.X_User_Groups on user.Id equals user_group.UserId
+                       join study_group in db.StudyGroups on user_group.StudyGroupId equals study_group.Id
+                       join sc_group in db.X_Coordinator_Groups on user_group.StudyGroupId equals sc_group.StudyGroupId
+                       where sc_group.CoordinatorId.Equals(coordinatorId)
+                       select new { user,user_group,sc_group, study_group};
+
+           foreach(var u in list)
+            {
+                users.Add(new UserDTO {
+                    Id = u.user.Id,
+                    UserName = u.user.UserName,
+                    Email = u.user.Email,
+                    StudyGroupId = u.user_group.StudyGroupId,
+                    StudyGroupName = u.study_group.StudyGroupName
+                });
+            }
+            return users;
+        }
         [Route("UpdateDeviceId")]
         [ResponseType(typeof(DeviceIdModel))]
         public IHttpActionResult PostDeviceId(Device device)
