@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.gcm.GcmReceiver;
@@ -94,7 +95,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ToggleButton toggleButton = (ToggleButton) getActivity().findViewById(R.id.toggle);
+        //ToggleButton toggleButton = (ToggleButton) getActivity().findViewById(R.id.toggle);
+        Switch notificationSwitch = (Switch) getActivity().findViewById(R.id.notificationSwitch);
         //SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences pref = getActivity().getSharedPreferences("isRegistered",Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = pref.edit();
@@ -102,9 +104,10 @@ public class ProfileFragment extends Fragment {
         String isReg = pref.getString("isRegistered","");
         final InstanceID instanceID = InstanceID.getInstance(getContext());
         //toggleButton.setChecked();
-        toggleButton.setChecked(isReg.equals("Yes"));
+        //toggleButton.setChecked(isReg.equals("Yes"));
+        notificationSwitch.setChecked(isReg.equals("Yes"));
         Log.d("demo","isreg "+ isReg);
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -132,6 +135,31 @@ public class ProfileFragment extends Fragment {
 
 
 
+            }
+        });*/
+        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                instanceID.deleteInstanceID();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            editor.putString("isRegistered","No");
+                            editor.commit();
+                        }
+                    }).start();
+
+                }
+                else{
+                    Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
+                    getActivity().startService(intent);
+
+                }
             }
         });
     }

@@ -415,7 +415,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                Log.d("demo", response.message());
+                Log.d("demo ok", response.message());
 
                 if (!response.isSuccessful()) {
                     runOnUiThread(new Runnable() {
@@ -437,7 +437,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         final Request requestUserInfo = new Request.Builder()
                                 .url(Constants.GET_USERINFO_URL + access_token)
                                 .build();
-
+                        Log.d("token",access_token);
                         client.newCall(requestUserInfo).enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -463,8 +463,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         JSONObject js = new JSONObject(responseBody);
                                         info.Id = js.getString("Id");
                                         info.Email = js.getString("Email");
-                                        info.Fullname = js.getString("Fullname");
-                                        info.RegionId = js.getInt("RegionId");
+                                        //info.Fullname = js.getString("Fullname");
+                                        //info.RegionId = js.getInt("RegionId");
 
 
 
@@ -477,8 +477,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                 editor.putString(Constants.USERID, info.Id);
                                                 editor.putString(Constants.USERNAME, info.Username);
                                                 editor.putString(Constants.EMAIL, info.Email);
-                                                editor.putInt(Constants.REGIONID, info.RegionId);
-                                                editor.putString(Constants.FULLNAME, info.Fullname);
+                                                //editor.putInt(Constants.REGIONID, info.RegionId);
+                                                //editor.putString(Constants.FULLNAME, info.Fullname);
                                                 editor.commit();
 
                                                 showProgress(false);

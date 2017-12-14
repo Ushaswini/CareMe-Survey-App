@@ -40,6 +40,7 @@ public class MyGcmListenerService extends GcmListenerService {
         Context context = getBaseContext();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.caremelogo).setContentTitle(title)
+                .setAutoCancel(true)
                 .setContentText(body);
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);

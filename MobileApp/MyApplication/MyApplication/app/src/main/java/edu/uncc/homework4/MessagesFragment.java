@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -256,5 +258,33 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    //sorting messages
+    public void sortList(){
+
+
+            Collections.sort(surveyQuestionArrayList, new Comparator<SurveyQuestion>() {
+                @Override
+                public int compare(SurveyQuestion o1, SurveyQuestion o2) {
+                    int returnValue = 0;
+                    try {
+                        if(new SimpleDateFormat("dd-MM-yyyy").parse(o1.getSurveyTime()).before(new SimpleDateFormat("dd-MM-yyyy").parse(o2.getSurveyTime())))// > 0 ? 1 : 0;
+                        {returnValue = -1;}
+                        else if(new SimpleDateFormat("dd-MM-yyyy").parse(o1.getSurveyTime()).after(new SimpleDateFormat("dd-MM-yyyy").parse(o2.getSurveyTime())))// > 0 ? 1 : 0;
+                        {returnValue = 1; }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    return returnValue;
+                }
+            });
+
+
+
+
+
     }
 }

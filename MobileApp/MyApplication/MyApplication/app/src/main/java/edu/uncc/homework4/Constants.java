@@ -9,9 +9,10 @@ package edu.uncc.homework4;
 
 public  class Constants {
 
-    public static final String BASE_URL = "http://careme-surveypart2.azurewebsites.net";
+    //public static final String BASE_URL = "http://careme-surveypart2.azurewebsites.net";
+    public static final String BASE_URL = "http://caremesurvey-nc.azurewebsites.net";
     public static final String LOGIN_URL = BASE_URL + "/oauth2/token";
-    public static final String GET_USERINFO_URL = BASE_URL + "/api/Account/UserInfo?token";
+    public static final String GET_USERINFO_URL = BASE_URL + "/api/Account/UserInfo?token=";
     public static final String GET_SURVEYS_URL = BASE_URL + "/api/Surveys/GetSurvey?userId=";
     public static final String POST_DEVICEID_URL = BASE_URL + "/api/Users/UpdateDeviceId";
     public static final String POST_RESPONSE_URL = BASE_URL + "/api/SurveyResponses";
