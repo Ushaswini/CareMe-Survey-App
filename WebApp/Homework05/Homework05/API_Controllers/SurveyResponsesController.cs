@@ -283,7 +283,7 @@ namespace Homework05.API_Controllers
                 };
 
                 responses.Add(responseDTO);
-
+            }
              /*   var usersInSurvey = from u in db.X_Survey_Groups
                                 join r in db.X_User_Groups.Include("User") on u.StudyGroupId equals r.StudyGroupId
                                 where u.SurveyId == surveyId
