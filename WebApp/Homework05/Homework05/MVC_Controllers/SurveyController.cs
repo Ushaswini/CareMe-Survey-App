@@ -9,14 +9,13 @@ using System.Web.Mvc;
 
 namespace Homework05.MVC_Controllers
 {
-    [AuthorizationFilter("StudyCoordinator")]
+    [AuthorizationFilter("StudyCoordinator,Admin")]
     public class SurveyController : Controller
     {
         public ActionResult Manage()
         {
             ViewBag.Title = "Survey Manager";
-
-            return View("~/Views/Survey/Manage.cshtml");
+            return View();
         }
     }
 }

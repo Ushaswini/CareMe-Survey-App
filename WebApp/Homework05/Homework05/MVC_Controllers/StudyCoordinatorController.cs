@@ -18,5 +18,30 @@ namespace Homework05.MVC_Controllers
             return View();
 
         }
+
+        public ActionResult ManageResource()
+        {
+            return View();
+        }
+
+        public ActionResult PublishSurveys()
+        {
+
+            ViewBag.Title = "PublishSurveys";
+            return View();
+
+        }
+
+        public ActionResult AnalyseResponses()
+        {
+            ViewBag.Title = "AnalyseResponses";
+            return RedirectToAction("Manage", "Survey");
+
+        }
+
+        public ActionResult ManageSurveys() {
+            ViewBag.Title = "Manage Surveys";
+            return View();
+        }
     }
 }

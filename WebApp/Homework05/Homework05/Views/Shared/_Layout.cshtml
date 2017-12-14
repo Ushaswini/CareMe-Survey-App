@@ -39,6 +39,8 @@
         {
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav" style="margin-left:0;">
+                @if (Session["userRole"].ToString().Equals("Admin"))
+                {
                     <li class="sidebar-brand">
                         <a href="#menu-toggle" id="menu-toggle" style="margin-top:20px;float:right;"> <i class="glyphicon glyphicon-align-justify" style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i></a>
                     </li>
@@ -46,14 +48,30 @@
                         <a href="/Admin/Dashboard" class="ach"><i class="glyphicon glyphicon-dashboard" aria-hidden="true"> </i> <span style="margin-left:10px;">Dashboard</span>  </a>
                     </li>
                     <li>
-                        <a href="/Admin/ManageResource" class="ach"> <i class="glyphicon glyphicon-book" aria-hidden="true"> </i> <span style="margin-left:10px;">Manage Resource</span> </a>
-                    </li>
-                    <li>
-                        <a href="/Admin/PublishSurveys" class="ach"> <i class="glyphicon glyphicon-bullhorn" aria-hidden="true"> </i> <span style="margin-left:10px;">Publish Surveys</span> </a>
-                    </li>
-                    <li>
                         <a href="/Admin/AnalyseResponses" class="ach"> <i class="glyphicon glyphicon-stats" aria-hidden="true"> </i> <span style="margin-left:10px;">Analyse Responses</span> </a>
                     </li>
+                }
+                else if (Session["userRole"].ToString().Equals("StudyCoordinator"))
+                {
+                    <li class="sidebar-brand">
+                        <a href="#menu-toggle" id="menu-toggle" style="margin-top:20px;float:right;"> <i class="glyphicon glyphicon-align-justify" style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="active">
+                        <a href="/StudyCoordinator/Dashboard" class="ach"><i class="glyphicon glyphicon-dashboard" aria-hidden="true"> </i> <span style="margin-left:10px;">Dashboard</span>  </a>
+                    </li>
+                    <li>
+                        <a href="/StudyCoordinator/ManageResource" class="ach"> <i class="glyphicon glyphicon-book" aria-hidden="true"> </i> <span style="margin-left:10px;">Manage Resource</span> </a>
+                    </li>
+                    <li>
+                        <a href="/StudyCoordinator/ManageSurveys" class="ach"> <i class="glyphicon glyphicon-folder-open" aria-hidden="true"> </i> <span style="margin-left:10px;">Manage Surveys</span> </a>
+                    </li>
+                    <li>
+                        <a href="/StudyCoordinator/PublishSurveys" class="ach"> <i class="glyphicon glyphicon-bullhorn" aria-hidden="true"> </i> <span style="margin-left:10px;">Publish Surveys</span> </a>
+                    </li>
+                    <li>
+                        <a href="/StudyCoordinator/AnalyseResponses" class="ach"> <i class="glyphicon glyphicon-stats" aria-hidden="true"> </i> <span style="margin-left:10px;">Analyse Responses</span> </a>
+                    </li>
+                }
                 </ul>
                 <ul class="sidebar-nav" style="margin-left:0;bottom:100px !important; top:auto !important">
                     <li>

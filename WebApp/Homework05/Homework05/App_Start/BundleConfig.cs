@@ -55,7 +55,11 @@ namespace Homework05
                       "~/Scripts/DataTables/buttons.datatables.js",
                       "~/Scripts/DataTables/buttons.print.min.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/SurveyMange").Include(
+            bundles.Add(new ScriptBundle("~/bundles/ResourceManage").Include(
+                     "~/Scripts/knockout-{version}.js",
+                      "~/Scripts/ResourceManage.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/SurveyManage").Include(
                      "~/Scripts/knockout-{version}.js",
                       "~/Scripts/SurveyManage.js"));
 
