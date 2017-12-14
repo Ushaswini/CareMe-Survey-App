@@ -47,8 +47,28 @@ namespace Homework05.API_Controllers
 
         public List<UserDTO> GetAllUsers()
         {
+            List<UserDTO> users = new List<UserDTO>();
             string roleName = "User";
             var role = AppRoleManager.Roles.Single(r => r.Name == roleName);
+            var list = from user in db.Users
+                       join user_group in db.X_User_Groups on user.Id equals user_group.UserId
+                       join study_group in db.StudyGroups on user_group.StudyGroupId equals study_group.Id                       
+                       select new { user, user_group, study_group };
+
+            foreach(var u in list.ToList())
+            {
+                users.Add(new UserDTO
+                {
+                    Id = u.user.Id,
+                    UserName = u.user.UserName,
+                    Email = u.user.Email,
+                    StudyGroupId = u.user_group.StudyGroupId,
+                    StudyGroupName = u.study_group.StudyGroupName
+                });
+            }
+
+            return users;
+
             /*var users = from user in UserManager.Users
             where user.Roles.Any(r => r.RoleId == role.Id)
             select user;
@@ -63,7 +83,7 @@ namespace Homework05.API_Controllers
                                            StudyGroupName = u.StudyGroup.StudyName
                                        }).ToList();
 
-            return usersDTO;*/
+            return usersDTO;
 
             // Find the users in that role
             var roleUsers = UserManager.Users
@@ -79,10 +99,10 @@ namespace Homework05.API_Controllers
                    // StudyGroupName = u.StudyGroup.StudyName
                 }).ToList();
 
-            return roleUsers;
+            return roleUsers;*/
         }
 
-        [Route("Coordinator")]
+        [Route("Coordinators")]
         public IList<UserDTO>GetUsersForSC(string coordinatorId)
         {
             List<UserDTO> users = new List<UserDTO>();
@@ -106,6 +126,32 @@ namespace Homework05.API_Controllers
             }
             return users;
         }
+
+        [Route("StudyGroups")]
+        public IList<UserDTO> GetUsersForSG(int groupId)
+        {
+            List<UserDTO> users = new List<UserDTO>();
+
+            var list = from user in db.Users
+                       join user_group in db.X_User_Groups on user.Id equals user_group.UserId
+                       join study_group in db.StudyGroups on user_group.StudyGroupId equals study_group.Id                       
+                       where study_group.Id == groupId
+                       select new { user, user_group, study_group };
+
+            foreach (var u in list)
+            {
+                users.Add(new UserDTO
+                {
+                    Id = u.user.Id,
+                    UserName = u.user.UserName,
+                    Email = u.user.Email,
+                    StudyGroupId = u.user_group.StudyGroupId,
+                    StudyGroupName = u.study_group.StudyGroupName
+                });
+            }
+            return users;
+        }
+
         [Route("UpdateDeviceId")]
         [ResponseType(typeof(DeviceIdModel))]
         public IHttpActionResult PostDeviceId(Device device)
