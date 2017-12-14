@@ -7,14 +7,16 @@ using System.Web.Mvc;
 
 namespace Homework05.MVC_Controllers
 {
-    [AuthorizationFilter("Admin,StudyCoordinator")]
-    public class ResponseController : Controller
+    [AuthorizationFilter("StudyCoordinator")]
+    public class StudyCoordinatorController : Controller
     {
-        
-        // GET: Response
-        public ActionResult Index()
+
+        public ActionResult Dashboard()
         {
+
+            ViewBag.Title = "Dashboard";
             return View();
+
         }
     }
 }

@@ -266,6 +266,7 @@
     <Compile Include="Models\QuestionsModels.cs" />
     <Compile Include="Models\SurveyViewModel.cs" />
     <Compile Include="MVC_Controllers\AdminController.cs" />
+    <Compile Include="MVC_Controllers\StudyCoordinatorController.cs" />
     <Compile Include="MVC_Controllers\HomeController.cs" />
     <Compile Include="DTOs\ResponseDTO.cs" />
     <Compile Include="DTOs\SurveyDTO.cs" />
@@ -377,6 +378,7 @@
     <Content Include="Views\Admin\ManageResource.cshtml" />
     <Content Include="Views\Admin\AnalyseResponses.cshtml" />
     <Content Include="Views\Admin\PublishSurveys.cshtml" />
+    <Content Include="Views\StudyCoordinator\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -48,4 +48,12 @@
         android:layout_height="wrap_content"
         android:textOn="Receiving Notifications enabled"
         android:textOff="Receiving Notifications disabled"/>
+
+    <Switch
+        android:id="@+id/notificationSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:showText="true"
+        android:textOff="Notifications Disabled"
+        android:textOn="Nortifications Enabled" />
 </LinearLayout>

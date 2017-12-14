@@ -41,6 +41,16 @@ namespace Homework05.Models
         public IList<string> Roles { get; set; }
 
         public string LoginProvider { get; set; }
+
+        public bool IsAdmin()
+        {
+            return Roles != null && Roles.Contains("Admin");
+        }
+
+        public bool IsStudyCoordinator()
+        {
+            return Roles != null && Roles.Contains("StudyCoordinator");
+        }
     }
     public class DeviceIdModel
     {
@@ -78,5 +88,6 @@ namespace Homework05.Models
     public class TokenModel
     {
         public string Access_Token { get; set; }
+        public string UserRole { get; set; }
     }
 }
