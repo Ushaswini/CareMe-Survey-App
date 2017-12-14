@@ -18,6 +18,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.iid.InstanceID;
+
+import java.io.IOException;
+
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -151,6 +155,11 @@ public class NavigationDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
 
             //TODO:Delete deviceid
+            try {
+                InstanceID.getInstance(getApplicationContext()).deleteInstanceID();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             prefsEditor.remove(Constants.AUTH_HEADER);
             prefsEditor.remove(Constants.USERID);
             prefsEditor.remove(Constants.USERNAME);

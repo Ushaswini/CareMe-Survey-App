@@ -24,6 +24,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -85,7 +86,8 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             vContext = context;
 
             if(BtnSend.isEnabled()){
-                if (rgOptions.getCheckedRadioButtonId() != -1 || etReplyMsg.getText() != null){
+                //if (rgOptions.getCheckedRadioButtonId() != -1 || etReplyMsg.getText() != null){
+                if (rgOptions.getCheckedRadioButtonId() != -1 || !etReplyMsg.getText().toString().equals("")){
                     final int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(position, rgOptions.getCheckedRadioButtonId(), etReplyMsg.getText().toString());
