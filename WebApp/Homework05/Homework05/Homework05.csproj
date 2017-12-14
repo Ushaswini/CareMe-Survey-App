@@ -261,6 +261,10 @@
     <Compile Include="Migrations\201712140310591_Initial-Setup.Designer.cs">
       <DependentUpon>201712140310591_Initial-Setup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712142249077_AlterQuestionTable.cs" />
+    <Compile Include="Migrations\201712142249077_AlterQuestionTable.Designer.cs">
+      <DependentUpon>201712142249077_AlterQuestionTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthorizationFilter.cs" />
     <Compile Include="Models\QuestionsModels.cs" />
@@ -404,6 +408,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712140310591_Initial-Setup.resx">
       <DependentUpon>201712140310591_Initial-Setup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712142249077_AlterQuestionTable.resx">
+      <DependentUpon>201712142249077_AlterQuestionTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
