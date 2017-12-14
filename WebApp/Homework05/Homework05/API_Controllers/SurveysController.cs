@@ -248,8 +248,13 @@ namespace Homework05.API_Controllers
             {
                 return NotFound();
             }
-          
-            var idsOfSurveysTaken = db.SurveyResponses.Where(s => s.UserId.Equals(userId)).Select(s => s.SurveyId).ToList();
+
+            var idsOfSurveysTaken = db.SurveyResponses
+                                        .Where(s => s.UserId.Equals(userId))
+                                        .Select(s => s.SurveyId)
+                                        .Distinct()                                        
+                                        .ToList();
+                                        //.GroupBy(s => s.SurveyId, s => s.SurveyId ,((k,v) => v);//.Select((key,value) => value.ToSurveyId).ToList();
 
             var userStudyGroupId = db.X_User_Groups.Where(u => u.UserId.Equals(userId)).FirstOrDefault();
 
@@ -322,7 +327,7 @@ namespace Homework05.API_Controllers
                     StudyCoordinatorName = s.Coordinator.UserName,
                 };
 
-                surveys.Add(survey);
+                if(!idsOfSurveysTaken.Contains(survey.SurveyId))surveys.Add(survey);
             }
 
             /* var surveysNotResponsed = (from r in db.Surveys.Include("Question")
