@@ -241,26 +241,26 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k"
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImYxOGVmMzBiLWU0YTktNGZmNC04MjI1LWMzMzhhODZkNWJhMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEzMzU1NjE4LCJuYmYiOjE1MTMyNjkyMTh9.wsOyc5HqgKmfKOlfYqJS9LvcWjNIpl4moV9q0S1Kbxk"
 					}
 				],
 				"body": {},
 				"url": {
-					"raw": "http://careme-surveypart2.azurewebsites.net/api/SurveyResponses?userId=17128ecf-c864-4ed4-8656-6c01efa295e6",
+					"raw": "http://localhost:59743/api/SurveyResponses/UserResponses?userId=f84c09c8-eb9d-4122-8c98-84a8455e81a7",
 					"protocol": "http",
 					"host": [
-						"careme-surveypart2",
-						"azurewebsites",
-						"net"
+						"localhost"
 					],
+					"port": "59743",
 					"path": [
 						"api",
-						"SurveyResponses"
+						"SurveyResponses",
+						"UserResponses"
 					],
 					"query": [
 						{
 							"key": "userId",
-							"value": "17128ecf-c864-4ed4-8656-6c01efa295e6",
+							"value": "f84c09c8-eb9d-4122-8c98-84a8455e81a7",
 							"equals": true
 						}
 					]
@@ -911,6 +911,111 @@
 					"path": [
 						"api",
 						"Surveys"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetResonsesFrStudyGroup",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImYxOGVmMzBiLWU0YTktNGZmNC04MjI1LWMzMzhhODZkNWJhMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEzMzYzNDMxLCJuYmYiOjE1MTMyNzcwMzF9.jIBWAc3aqw8LbIN8McY0KZG5XShEQFEhAhrP7NOIabI"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:59743/api/SurveyResponses/StudyResponses?studyGroupId=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59743",
+					"path": [
+						"api",
+						"SurveyResponses",
+						"StudyResponses"
+					],
+					"query": [
+						{
+							"key": "studyGroupId",
+							"value": "4",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetResponsesForCoordinator",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImYxOGVmMzBiLWU0YTktNGZmNC04MjI1LWMzMzhhODZkNWJhMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEzMzYzNDMxLCJuYmYiOjE1MTMyNzcwMzF9.jIBWAc3aqw8LbIN8McY0KZG5XShEQFEhAhrP7NOIabI"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:59743/api/SurveyResponses/CoordinatorSurveyResponses?coordinatorId=e3e29e38-2d09-41d9-a049-60f3f95bde31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59743",
+					"path": [
+						"api",
+						"SurveyResponses",
+						"CoordinatorSurveyResponses"
+					],
+					"query": [
+						{
+							"key": "coordinatorId",
+							"value": "e3e29e38-2d09-41d9-a049-60f3f95bde31",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetResponsesForSurvey",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImYxOGVmMzBiLWU0YTktNGZmNC04MjI1LWMzMzhhODZkNWJhMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEzMzYzNDMxLCJuYmYiOjE1MTMyNzcwMzF9.jIBWAc3aqw8LbIN8McY0KZG5XShEQFEhAhrP7NOIabI"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:59743/api/SurveyResponses/SurveyResponses?surveyId=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59743",
+					"path": [
+						"api",
+						"SurveyResponses",
+						"SurveyResponses"
+					],
+					"query": [
+						{
+							"key": "surveyId",
+							"value": "5",
+							"equals": true
+						}
 					]
 				},
 				"description": ""
