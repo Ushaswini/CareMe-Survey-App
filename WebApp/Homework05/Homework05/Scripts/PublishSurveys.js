@@ -195,8 +195,6 @@
             data: JSON.stringify(surveyData)
 
         }).done(function (data) {
-            console.log("data is received");
-            console.log(data);
             alert("Published!");
             self.selectedQuestionId('');
             self.selectedStudyGroupForSurvey('');
@@ -235,11 +233,8 @@
             data: JSON.stringify(surveyData)
 
         }).done(function (data) {
-            console.log("data is received");
-            console.log(data);
             alert("Published!");
-            self.selectedQuestionId('');
-            self.selectedStudyGroupForSurvey('');
+            LoadSurveys();
             $('input[name=time1]').val("");
             $('input[name=time2]').val("");
             $('input[name=frequency]:checked').prop('checked', false);

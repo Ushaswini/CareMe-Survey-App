@@ -117,8 +117,8 @@ namespace Homework05.API_Controllers
             var surveysForCoordinator = from survey_group in db.X_Survey_Groups.Include("Survey")
                                       join coordinator_group in db.X_Coordinator_Groups.Include("Coordinator") on survey_group.StudyGroupId equals coordinator_group.StudyGroupId
                                        join studyGroup in db.StudyGroups on survey_group.StudyGroupId equals studyGroup.Id
-                                        where coordinator_group.CoordinatorId.Equals(coordinatorId)
-                                      select new { survey_group, coordinator_group, studyGroup, Survey = survey_group.Survey, Coordinator = coordinator_group.Coordinator };
+                                        where coordinator_group.CoordinatorId.Equals(coordinatorId) && survey_group.Survey.SurveyType == SurveyType.Survey
+                                        select new { survey_group, coordinator_group, studyGroup, Survey = survey_group.Survey, Coordinator = coordinator_group.Coordinator };
 
 
           /*  var surveysForCoordinator = db.X_Survey_Groups
