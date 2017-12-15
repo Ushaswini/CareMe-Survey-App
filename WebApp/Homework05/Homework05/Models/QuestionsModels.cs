@@ -11,7 +11,7 @@ namespace Homework05.Models
         public bool Active { get; set; }
         public int Id { get; set; }
         public string QuestionText { get; set; }
-        public QuestionType QuestionType { get; set; }
+        public string QuestionType { get; set; }
         public string Options { get; set; }
         public int Minimum { get; set; }
         public int Maximum { get; set; }

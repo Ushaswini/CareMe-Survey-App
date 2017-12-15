@@ -40,7 +40,7 @@ namespace Homework05.API_Controllers
 
             questionViewModel.Id = question.Id;
             questionViewModel.QuestionText = question.QuestionText;
-            questionViewModel.QuestionType = question.QuestionType;
+            questionViewModel.QuestionType = ((QuestionType)question.QuestionType).ToString();
             questionViewModel.Options = question.Options;
             questionViewModel.Minimum = question.Minimum;
             questionViewModel.Maximum = question.Maximum;
