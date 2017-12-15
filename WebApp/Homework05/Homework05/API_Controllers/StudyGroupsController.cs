@@ -52,7 +52,7 @@ namespace Homework05.API_Controllers
 
         // GET: api/StudyGroups/5
         [ResponseType(typeof(StudyGroup))]
-        public IHttpActionResult GetStudyGroup(string id)
+        public IHttpActionResult GetStudyGroup(int id)
         {
             StudyGroup studyGroup = db.StudyGroups.Find(id);
             if (studyGroup == null)

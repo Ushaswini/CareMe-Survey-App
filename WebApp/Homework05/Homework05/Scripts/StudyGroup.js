@@ -15,7 +15,7 @@
             buttons: [
                 'print'
             ],
-            columns: [{ data: "Id" }, { data: "StudyGroupName" }, { data: "StudyGroupCreatedTime" }]
+            columns: [{ data: "Id" }, { data: "StudyGroupName" }, { data: "CreatedTime" }]
         });
 
     LoadStudyGroups();
@@ -23,13 +23,14 @@
     function LoadStudyGroups() {
         var headers = {};
         var token = sessionStorage.getItem(tokenKey);
+        var userId = sessionStorage.getItem("userId");
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
         console.log(token);
         $.ajax({
             type: 'GET',
-            url: '/api/StudyGroups',
+            url: '/api/StudyGroups/Coordinator?coordinatorId=' + userId,
             headers: headers,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
@@ -50,7 +51,7 @@
                 buttons: [
                     'print'
                 ],
-                columns: [{ data: "Id" }, { data: "StudyGroupName" }, { data: "StudyGroupCreatedTime" }]
+                columns: [{ data: "Id" }, { data: "StudyGroupName" }, { data: "CreatedTime" }]
             });
     }
 
