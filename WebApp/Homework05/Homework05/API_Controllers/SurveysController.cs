@@ -698,10 +698,11 @@ namespace Homework05.API_Controllers
                 db.SaveChanges();
 
                 List<string> deviceIds = new List<string>();
-                var userIdsInGroup = db.X_User_Groups.Where(u => u.StudyGroupId.Equals(surveyToSend.StudyGroupId)).Select(u =>  u.UserId ).ToList();
-                foreach (var userId in userIdsInGroup)
+                var ids = from user_group in db.X_User_Groups where user_group.StudyGroupId == surveyToSend.StudyGroupId select new { UserId = user_group.UserId };
+                //var userIdsInGroup = db.X_User_Groups.Where(u => u.StudyGroupId.Equals(surveyToSend.StudyGroupId)).Select(u =>  u.UserId ).ToList();
+                foreach (var userId in ids.ToList())
                 {
-                    var devicesForOneUser = db.Devices.Where(d => d.UserId.Equals(userId));
+                    var devicesForOneUser = db.Devices.Where(d => d.UserId.Equals(userId.UserId));
                     foreach (var device in devicesForOneUser)
                     {
                         deviceIds.Add(device.DeviceId);

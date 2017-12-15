@@ -16,7 +16,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace Homework05.API_Controllers
 {
-    [Authorize(Roles = "Admin,StudyCoordinator")]
+    [Authorize]
     [RoutePrefix("api/SurveyResponses")]
     public class SurveyResponsesController : ApiController
     {
