@@ -293,7 +293,7 @@ namespace Homework05.API_Controllers
             var surveysNotResponsed = (from survey_group in db.X_Survey_Groups.Include("Survey")
                                       join coordinator_group in db.X_Coordinator_Groups.Include("Coordinator") on survey_group.StudyGroupId equals coordinator_group.StudyGroupId
                                        where survey_group.StudyGroupId.Equals(userStudyGroupId.StudyGroupId)
-                                       where !idsOfSurveysTaken.Contains(survey_group.SurveyId)
+                                      // where !idsOfSurveysTaken.Contains(survey_group.SurveyId)
                                        select new 
                                        {
                                            X_Survey_Id = survey_group.SurveyId,
