@@ -10,12 +10,9 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Homework05.Models;
 using System.Data.Entity.Validation;
-using Homework05.DTOs;
 
 namespace Homework05.API_Controllers
 {
-    [Authorize]
-    [RoutePrefix("api/StudyGroups")]
     public class StudyGroupsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -27,27 +24,10 @@ namespace Homework05.API_Controllers
         }
 
         //TODO
-        [Route("Coordinator")]
-        public IList<StudyGroupDTO> GetStudyGroupsForCoordinator(string coordinatorId)
+        public IList<StudyGroup> GetStudyGroupsForCoordinator(string coordinatorId)
         {
-            List<StudyGroupDTO> groupsDTO = new List<StudyGroupDTO>();
-            var groups = from study_group in db.StudyGroups
-                         join coordinator in db.X_Coordinator_Groups 
-                         on study_group.Id equals coordinator.StudyGroupId
-                         where coordinator.CoordinatorId.Equals(coordinatorId)
-                         select new { study_group, coordinator };
-
-            foreach(var g in groups.ToList())
-            {
-                groupsDTO.Add(new StudyGroupDTO {
-                    Id = g.study_group.Id,
-                    CoordinatorId = coordinatorId,
-                    StudyGroupName = g.study_group.StudyGroupName,
-                    CreatedTime = g.study_group.StudyGroupCreatedTime
-                });
-            }
-
-            return groupsDTO;
+           // zvar groups = db.StudyGroups.Where(s => s.StudyCoordinatorId.Equals(coordinatorId));
+            return null;
         }
 
         // GET: api/StudyGroups/5

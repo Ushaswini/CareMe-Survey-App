@@ -6,8 +6,6 @@
     ko.applyBindings(app);
 
     var tokenKey = 'accessToken';
-
-    console.log("document loaded");
     self.surveysDataTable = $("#surveysTable").DataTable(
         {
             data: self.surveys,
@@ -21,6 +19,7 @@
     LoadStudyGroups();
     LoadQuestions();
     LoadSurveys();
+    LoadAllSurveys();
     
     
     function LoadQuestions() {
@@ -56,7 +55,6 @@
             headers: headers,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
-            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 self.studyGroups.push(data[i]);
             }
@@ -64,6 +62,26 @@
     }
 
     function LoadSurveys() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        var coordinatorId = sessionStorage.getItem("userId");
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/Surveys/CoordinatorSurveys?coordinatorId=' + coordinatorId,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.surveys = data;
+            BindSurveysToDatatable();
+        }).fail(showError);
+    }
+
+    function LoadAllSurveys() {
         var headers = {};
         var token = sessionStorage.getItem(tokenKey);
         if (token) {
@@ -77,13 +95,13 @@
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             console.log(data);
-            self.surveys = data;
-            BindSurveysToDatatable(data);
+            for (var i = 0; i < data.length; i++) {
+                self.AllSurveys.push(data[i]);
+            }
         }).fail(showError);
     }
 
     function BindSurveysToDatatable(data) {
-        console.log(self.surveys);
         self.surveysDataTable.clear();
         self.surveysDataTable.destroy();
         self.surveysDataTable = $("#surveysTable").DataTable(
@@ -159,19 +177,58 @@
         }
         var date = new Date();
         var surveyData = {
-            SurveyId: guid(),            
-            StudyGroupId: self.selectedStudyGroupForSurvey(),
+            SurveyId: selectedQuestionId(),            
+            StudyGroupId: self.selectedStudyGroupForQuestion(),
             SurveyCreatedTime: date.toString(),
             FrequencyOfNotifications: frequencyOfNotifications,
             Time1: time1.toString(),
-            Time2: time2.toString(),
-            QuestionId: selectedQuestionId()
+            Time2: time2.toString()
         }
 
         console.log(JSON.stringify(surveyData));
         $.ajax({
             type: 'POST',
-            url: '/api/Surveys/Post',
+            url: '/api/Surveys/Publish',
+            headers: headers,
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(surveyData)
+
+        }).done(function (data) {
+            console.log("data is received");
+            console.log(data);
+            alert("Published!");
+            self.selectedQuestionId('');
+            self.selectedStudyGroupForSurvey('');
+            $('input[name=time1]').val("");
+            $('input[name=time2]').val("");
+            $('input[name=frequency]:checked').prop('checked', false);
+
+        }).fail(showError);
+
+
+
+    })
+
+
+    $("#btnPublishSurvey").click(function () {
+
+        var tokenKey = 'accessToken';
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        var date = new Date();
+        var surveyData = {
+            SurveyId: self.selectedSurveyId(),
+            StudyGroupId: self.selectedStudyGroupForSurvey(),
+            SurveyCreatedTime: date.toString()
+        }
+
+        console.log(JSON.stringify(surveyData));
+        $.ajax({
+            type: 'POST',
+            url: '/api/Surveys/Publish',
             headers: headers,
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(surveyData)
@@ -217,84 +274,23 @@
         }
     })
     function ViewModel() {
-
-        self.userName = ko.observable();
-        self.userPassword = ko.observable();
+        
         self.studyGroups = ko.observableArray([]);
         self.questions = ko.observableArray([]);
-        self.users = {}
+        self.AllSurveys = ko.observableArray([]);
         self.surveys = {}
         self.userEmail = ko.observable();
         self.selectedStudyGroup = ko.observable();
+        self.selectedStudyGroupForQuestion = ko.observable();
         self.selectedStudyGroupForSurvey = ko.observable();
         self.selectedQuestionId = ko.observable();
+        self.selectedSurveyId = ko.observable();
 
         self.questionText = ko.observable();
         self.options = ko.observable();
 
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
-
-
-
-        self.AddUser = function () {
-
-            self.result('');
-            self.errors.removeAll();
-
-            var data = {
-                UserName: self.userName(),
-                Password: self.userPassword(),
-                Email: self.userEmail(),
-                StudyGroupId: self.selectedStudyGroup()
-            };
-            var headers = {};
-            var token = sessionStorage.getItem(tokenKey);
-            if (token) {
-                headers.Authorization = 'Bearer ' + token;
-            }
-            console.log("Data to add" + data);
-            $.ajax({
-                type: 'POST',
-                url: '/api/Account/AddUser',
-                headers: headers,
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function (data) {
-                self.result("Done!");
-                //Load users
-                LoadUsers();
-            }).fail(showError);
-        }
-        self.AddQuestion = function () {
-            console.log($('#questionType').val());
-            var data = {
-                QuestionText: self.questionText(),
-                QuestionType: $('#questionType').val(),
-                Options: self.options(),
-                QuestionId:guid()
-
-            };
-            var headers = {};
-            var token = sessionStorage.getItem(tokenKey);
-            if (token) {
-                headers.Authorization = 'Bearer ' + token;
-            }
-            console.log("Data to add" + data);
-            $.ajax({
-                type: 'POST',
-                url: '/api/Questions',
-                headers: headers,
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function (data) {
-                self.result("Done!");
-
-                $('#myModal').modal('toggle');
-                //Load questions
-                LoadQuestions();
-            }).fail(showError);
-        }
 
     }
 

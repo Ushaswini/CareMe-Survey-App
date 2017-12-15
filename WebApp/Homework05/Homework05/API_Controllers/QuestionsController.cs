@@ -18,9 +18,26 @@ namespace Homework05.API_Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Questions
-        public IQueryable<Question> GetQuestions()
+        public List<QuestionViewModel> GetQuestions()
         {
-            return db.Questions;
+            var questions = db.Questions.ToList();
+            var data = questions.Select(q => GetViewModel(q)).ToList();
+            return data;
+        }
+
+        private QuestionViewModel GetViewModel(Question question) {
+
+            QuestionViewModel questionViewModel = new QuestionViewModel();
+
+            questionViewModel.Id = question.Id;
+            questionViewModel.QuestionText = question.QuestionText;
+            questionViewModel.QuestionType = question.QuestionType;
+            questionViewModel.Options = question.Options;
+            questionViewModel.Minimum = question.Minimum;
+            questionViewModel.Maximum = question.Maximum;
+            questionViewModel.StepSize = question.StepSize;
+
+            return questionViewModel;
         }
 
         // GET: api/Questions/5

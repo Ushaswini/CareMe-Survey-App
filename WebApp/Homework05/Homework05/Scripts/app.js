@@ -44,7 +44,9 @@
             data: loginData
         }).done(function (data) {
             if (data.success == true) {
+                console.log(data.resultObject.UserId);
                 sessionStorage.setItem(tokenKey, data.resultObject.Access_Token);
+                sessionStorage.setItem("userId", data.resultObject.UserId);
                 window.location.href = data.resultObject.UserRole + '/Dashboard';
             } else {
                 self.errors.removeAll();

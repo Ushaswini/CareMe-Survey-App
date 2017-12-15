@@ -303,6 +303,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\AddSurvey.js" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\Auth.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -334,6 +335,7 @@
     <None Include="Properties\PublishProfiles\CareMeSurvey-NC - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\AddQuestion.js" />
+    <Content Include="Scripts\StudyGroup.js" />
     <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\DataTables\buttons.datatables.css" />
     <Content Include="Scripts\DataTables\buttons.datatables.js" />
