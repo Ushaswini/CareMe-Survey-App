@@ -60,10 +60,12 @@ namespace Homework05.MVC_Controllers
                         if (userinfo.IsAdmin() || userinfo.IsStudyCoordinator())
                         {
                             resultObject.UserRole = userinfo.IsAdmin() ? "Admin" : "StudyCoordinator";
+                            resultObject.UserId = userinfo.Id;
 
                             Session["accessToken"] = resultObject.Access_Token;
                             Session["userRole"] = resultObject.UserRole;
                             Session["userName"] = userinfo.UserName;
+                            Session["userId"] = userinfo.Id;
                             FormsAuthentication.SetAuthCookie(resultObject.Access_Token, false);
                             return Json(new { success = true, responseText = "Login successful", resultObject });
                         }

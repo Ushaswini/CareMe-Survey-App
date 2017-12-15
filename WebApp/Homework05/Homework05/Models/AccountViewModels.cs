@@ -89,5 +89,6 @@ namespace Homework05.Models
     {
         public string Access_Token { get; set; }
         public string UserRole { get; set; }
+        public string UserId { get; set; }
     }
 }

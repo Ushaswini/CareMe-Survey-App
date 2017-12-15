@@ -9,9 +9,21 @@ namespace Homework05.Models
 {
     public class SurveyViewModel
     {
+        [Required]
         public string SurveyName { get; set; }
-        public SurveyType SurveyType { get; set; }        
-        public List<int> QuestionIds { get; set; }        
+        public SurveyType SurveyType { get; set; }
+        [Required(ErrorMessage ="You Should select atleast one question")]
+        public string QuestionIds_String { get; set; }
+
+        private List<int> questionIds;
+        public List<int> QuestionIds { get {
+                if (QuestionIds_String == null || QuestionIds_String.Equals(""))
+                    return null;
+
+                return QuestionIds_String.TrimEnd(',') .Split(',').Select(s => Int32.Parse(s)).ToList();
+            } set {
+                this.questionIds = value;
+            } }        
     }
 
     public class PublishSurveyViewModel
