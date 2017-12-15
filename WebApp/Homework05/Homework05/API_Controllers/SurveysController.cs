@@ -56,7 +56,7 @@ namespace Homework05.API_Controllers
         {
             List<SurveyDTO> surveysSaved = new List<SurveyDTO>();
 
-            var surveysInDb = db.Surveys.ToList();
+            var surveysInDb = db.Surveys.Where(s => s.SurveyType == SurveyType.Survey).ToList();
             foreach (var s in surveysInDb)
             {
                 var questionsInSurvey = db.X_Survey_Questions
@@ -508,6 +508,81 @@ namespace Homework05.API_Controllers
             return Ok();
         }
 
+        [Route("PublishQuestion")]
+        public IHttpActionResult PublishQuestion(PublishSurveyViewModel survey)
+        {
+            SurveyViewModel questionSurvey = new SurveyViewModel();
+
+            questionSurvey.QuestionIds_String = survey.SurveyId.Value.ToString();
+            questionSurvey.SurveyName = Guid.NewGuid().ToString();
+            questionSurvey.SurveyType = SurveyType.Message;
+
+            var result = SaveQuestionSurvey(questionSurvey);
+
+            survey.SurveyId = result;
+
+            var surveyDetails = db.Surveys.Find(result);
+            if (surveyDetails != null)
+            {
+                if (surveyDetails.SurveyType == SurveyType.Message)
+                {
+                    //based on recurrence Add to X_Survey_Group
+
+                    try
+                    {
+                        switch (survey.FrequencyOfNotifications)
+                        {
+                            case Frequency.Daily:
+                                {
+                                    String[] times = survey.Time1.Split(':');
+                                    String cornExpression = times[1] + " " + times[0] + " * * * ";
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "", () => SendNotification(survey), cornExpression, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    break;
+                                }
+                            case Frequency.Hourly:
+                                {
+                                    SendNotification(survey);
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "", () => SendNotification(survey), Cron.Hourly, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    break;
+                                }
+                            case Frequency.TwiceDaily:
+                                {
+                                    String[] times = survey.Time1.Split(':');
+                                    String cornExpression = times[1] + " " + times[0] + " * * *";
+                                    String[] times2 = survey.Time2.Split(':');
+                                    String cornExpression2 = times2[1] + " " + times2[0] + " * * *";
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "First", () => SendNotification(survey), cornExpression, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "Second", () => SendNotification(survey), cornExpression2, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    break;
+                                }
+                        }
+                    }
+                    catch (DbUpdateException)
+                    {
+                        if (SurveyExists(survey.SurveyId.Value))
+                        {
+                            return Conflict();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+
+                }
+                else
+                {
+                    //add to X_Survey_Group and send right now
+                    SendNotification(survey);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
         //Add survey to db -- not publishing
         // POST: api/Surveys
         [Route("Post")]
@@ -549,6 +624,52 @@ namespace Homework05.API_Controllers
             }
 
             return Ok(surveyToSave);
+
+            /*
+           
+            return Ok(survey);*/
+
+
+        }
+
+
+        private int SaveQuestionSurvey(SurveyViewModel survey)
+        {
+            var surveyToSave = new Survey { SurveyName = survey.SurveyName, SurveyType = survey.SurveyType };
+
+            if (!ModelState.IsValid)
+            {
+                return 0;
+            }
+            db.Surveys.Add(surveyToSave);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception oExcep)
+            {
+                Console.Write(oExcep.Message);
+                throw;
+            }
+
+            var id = surveyToSave.Id;
+            foreach (var question in survey.QuestionIds)
+            {
+                // add to X_Survey_Question
+                db.X_Survey_Questions.Add(new X_Survey_Question { SurveyId = id, QuestionId = question });
+            }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+                throw;
+            }
+
+            return surveyToSave.Id;
 
             /*
            
