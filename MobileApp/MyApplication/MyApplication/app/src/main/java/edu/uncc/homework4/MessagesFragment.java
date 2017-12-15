@@ -51,7 +51,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
 
     MessagesRecyclerAdapter messagesRecyclerAdapter;
     ArrayList<String> messagesList;
-    ArrayList<SurveyQuestion> surveyQuestionArrayList;
+    ArrayList<Survey> surveyQuestionArrayList;
     RecyclerView messagesView;
     Activity myActivity;
     SharedPreferences prefs;
@@ -113,7 +113,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
 
                 Log.d("demo", "success");
                 messagesList = new ArrayList<>();
-                final ArrayList<SurveyQuestion> surveysList = new ArrayList<SurveyQuestion>();
+                final ArrayList<Survey> surveysList = new ArrayList<Survey>();
                 final String myResponse = response.body().string();
                 Log.d("demo", myResponse + " hello " + messagesList);
 
@@ -121,7 +121,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                     JSONObject jsonObject = new JSONObject(myResponse);
                     JSONArray jsonArray = jsonObject.getJSONArray("SurveysResponded");
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonO = jsonArray.getJSONObject(i);
+                        /*JSONObject jsonO = jsonArray.getJSONObject(i);
                         SurveyQuestion sq = new SurveyQuestion();
                         sq.setQuestion(jsonO.getString("QuestionText"));
                         sq.setResponse(jsonO.getString("ResponseText"));
@@ -129,20 +129,44 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                         sq.setUserId(UserId);
                         sq.setQuesType(jsonO.getInt("QuestionType"));
                         sq.setSurveyTime(jsonO.getString("ResponseReceivedTime"));
-                        surveysList.add(sq);
+                        surveysList.add(sq);*/
                     }
                     JSONArray jsonArray1 = jsonObject.getJSONArray("Surveys");
                     for (int i = 0; i < jsonArray1.length(); i++) {
                         JSONObject jsonO = jsonArray1.getJSONObject(i);
-                        SurveyQuestion sq = new SurveyQuestion();
+                        Survey survey  = new Survey();
+                        survey.setSurveyId(jsonO.getInt("SurveyId"));
+                        survey.setSurveyName(jsonO.getString("SurveyName"));
+                        survey.setStudyCoordinatorId(jsonO.getString("StudyCoordinatorId"));
+                        survey.setStudyCoordinatorName(jsonO.getString("StudyCoordinatorName"));
+                        survey.setStudyGroupId(jsonO.getInt("StudyGroupId"));
+                        survey.setSurveytype(jsonO.getInt("SurveyType"));
+
+                        ArrayList<SurveyQuestion> questions = new ArrayList<>();
+                        SurveyQuestion question;
+                        JSONArray questionsJSONArray = jsonO.getJSONArray("Questions");
+                        for(int p =0;p< questionsJSONArray.length();p++ ){
+                            JSONObject questionJSON = questionsJSONArray.getJSONObject(p);
+                            question = new SurveyQuestion();
+                            question.setQuestionId(questionJSON.getInt("Id"));
+                            question.setQuestionText(questionJSON.getString("QuestionText"));
+                            question.setQuestionType(questionJSON.getInt("QuestionType"));
+                            question.setOptions(questionJSON.getString("Options"));
+                            question.setMaximum(questionJSON.getDouble("Maximum"));
+                            question.setMinimum(questionJSON.getDouble("Minimum"));
+                            question.setStepsize(questionJSON.getDouble("StepSize"));
+                            questions.add(question);
+                        }
+                        survey.setQuestions(questions);
+                        /*SurveyQuestion sq = new SurveyQuestion();
                         sq.setQuestion(jsonO.getString("QuestionText"));
                         sq.setSurveyId(jsonO.getString("SurveyId"));
                         sq.setStudyGrpId(jsonO.getString("StudyGroupId"));
                         sq.setUserId(UserId);
                         sq.setQuesType(jsonO.getInt("QuestionType"));
                         sq.setSurveyTime(jsonO.getString("SurveyCreatedTime"));
-                        sq.setResponse("");
-                        surveysList.add(sq);
+                        sq.setResponse("");*/
+                        surveysList.add(survey);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -169,6 +193,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
         prefs = getActivity().getSharedPreferences(Constants.PREFS, Context.MODE_PRIVATE);
 
         Access_Token = prefs.getString(Constants.AUTH_HEADER, "");
+        Log.d("demo",Access_Token);
         UserId = prefs.getString(Constants.USERID, "");
         surveyQuestionArrayList = new ArrayList<>();
         messagesRecyclerAdapter = new MessagesRecyclerAdapter(surveyQuestionArrayList, getContext());
@@ -192,9 +217,10 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences(Constants.PREFS,Context.MODE_PRIVATE);
         String access_token = sharedPref.getString(Constants.AUTH_HEADER,"");
-        SurveyQuestion data = surveyQuestionArrayList.get(position);
+        Survey data = surveyQuestionArrayList.get(position);
         String replyText = "";
-        switch (data.QuestionType)
+        //TODO Based on survey type- respond
+       /* switch (data.QuestionType)
         {
             case Choice:
             {
@@ -239,7 +265,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                 Log.d("demo","response success");
                 GetSurveysAsync();
             }
-        });
+        });*/
 
 
 
@@ -264,7 +290,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
     public void sortList(){
 
 
-            Collections.sort(surveyQuestionArrayList, new Comparator<SurveyQuestion>() {
+            /*Collections.sort(surveyQuestionArrayList, new Comparator<SurveyQuestion>() {
                 @Override
                 public int compare(SurveyQuestion o1, SurveyQuestion o2) {
                     int returnValue = 0;
@@ -280,7 +306,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
 
                     return returnValue;
                 }
-            });
+            });*/
 
 
 

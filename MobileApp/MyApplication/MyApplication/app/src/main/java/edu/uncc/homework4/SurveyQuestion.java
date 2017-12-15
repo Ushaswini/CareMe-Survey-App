@@ -1,6 +1,7 @@
 package edu.uncc.homework4;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Nitin on 11/20/2017.
@@ -8,76 +9,73 @@ import java.io.Serializable;
 
 public class SurveyQuestion implements Serializable {
 
-    String question, userId, surveyTime;
-    String response,studyGrpId,surveyId,responseDate;
-    QuestionType QuestionType;
+
+    int questionId;
+    String questionText,options;
+    double minimum, maximum, stepsize;
+
+
+    QuestionType questionType;
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = QuestionType.values()[questionType];
+    }
 
     public SurveyQuestion() {
     }
 
-    public String getQuestion() {
-        return question;
+    public int getQuestionId() {
+        return questionId;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 
-    public String getResponse() {
-        return response;
+
+
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
     }
 
-    public String getStudyGrpId() {
-        return studyGrpId;
+    public String getOptions() {
+        return options;
     }
 
-    public void setStudyGrpId(String studyGrpId) {
-        this.studyGrpId = studyGrpId;
+    public void setOptions(String options) {
+        this.options = options;
     }
 
-    public String getSurveyId() {
-        return surveyId;
+    public double getMinimum() {
+        return minimum;
     }
 
-    public void setSurveyId(String surveyId) {
-        this.surveyId = surveyId;
+    public void setMinimum(double minimum) {
+        this.minimum = minimum;
     }
 
-    public String getResponseDate() {
-        return responseDate;
+    public double getMaximum() {
+        return maximum;
     }
 
-    public void setResponseDate(String responseDate) {
-        this.responseDate = responseDate;
+    public void setMaximum(double maximum) {
+        this.maximum = maximum;
     }
 
-    public String getUserId() {
-        return userId;
+    public double getStepsize() {
+        return stepsize;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public QuestionType getQuesType() {
-        return QuestionType;
-    }
-
-    public void setQuesType(int quesType) {
-
-        this.QuestionType = QuestionType.values()[quesType];
-    }
-
-    public String getSurveyTime() {
-        return surveyTime;
-    }
-
-    public void setSurveyTime(String surveyTime) {
-        this.surveyTime = surveyTime;
+    public void setStepsize(double stepsize) {
+        this.stepsize = stepsize;
     }
 }
 

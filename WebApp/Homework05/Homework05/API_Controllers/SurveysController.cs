@@ -552,7 +552,7 @@ namespace Homework05.API_Controllers
                 {
                     if (survey.SurveyType == SurveyType.Message)
                     {
-                        var question = db.X_Survey_Questions.Where(q => q.SurveyId == survey.Id).FirstOrDefault();
+                        var question = db.X_Survey_Questions.Where(q => q.SurveyId == survey.Id).Include(q => q.Question).FirstOrDefault();
                         messageToDisplay = question.Question.QuestionText;
                     }
                     else

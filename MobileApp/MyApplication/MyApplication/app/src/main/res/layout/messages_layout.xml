@@ -24,6 +24,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:text="TextView" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Take Survey"
+            android:id="@+id/btnTakeSurvey"/>
         <RadioGroup
             android:id="@+id/rgChoice"
             android:layout_width="match_parent"

@@ -38,7 +38,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static edu.uncc.homework4.QuestionType.Choice;
-import static edu.uncc.homework4.QuestionType.Message;
+import static edu.uncc.homework4.QuestionType.Info;
+
 
 /**
  * Created by Nitin on 11/14/2017.
@@ -67,6 +68,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         public EditText etReplyMsg;
         public TextView tvTime;
         public ImageView imMessageTick;
+        public  Button btnTakeSurvey;
 
 
         Context vContext;
@@ -82,6 +84,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             etReplyMsg = (EditText)itemView.findViewById(R.id.etAnswer);
             tvTime = (TextView)itemView.findViewById(R.id.messageTime);
             imMessageTick = (ImageView)itemView.findViewById(R.id.imgResponseTick);
+            btnTakeSurvey = (Button) itemView.findViewById(R.id.btnTakeSurvey);
 
             vContext = context;
 
@@ -98,10 +101,10 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
     }
 
-    List<SurveyQuestion> messages;
+    List<Survey> messages;
     Context mContext;
 
-    public MessagesRecyclerAdapter(List<SurveyQuestion> messages, Context mContext) {
+    public MessagesRecyclerAdapter(List<Survey> messages, Context mContext) {
         this.messages = messages;
         this.mContext = mContext;
     }
@@ -124,91 +127,111 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     @Override
     public void onBindViewHolder(MessagesRecyclerAdapter.ViewHolder holder, int position) {
 
-        SurveyQuestion surveyQuestion = messages.get(position);
-        holder.tvMessage.setText(surveyQuestion.getQuestion());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
-        try {
-            Date messageDate = simpleDateFormat.parse(messages.get(position).getSurveyTime());
-            PrettyTime p = new PrettyTime();
-            holder.tvTime.setText(p.format(messageDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Survey survey = messages.get(position);
+        SurveyQuestion surveyQuestion;
 
-        switch (surveyQuestion.QuestionType)
-        {
-            case Message:
+        Log.d("demo", survey.surveytype+"");
+        if(survey.surveytype == 0){
+            //Survey -- show button
+            holder.etReplyMsg.setVisibility(View.GONE);
+            holder.rgOptions.setVisibility(View.GONE);
+            holder.tvMessage.setVisibility(View.VISIBLE);
+            holder.imMessageTick.setVisibility(View.GONE);
+            holder.BtnSend.setVisibility(View.GONE);
+            Log.d("demo", survey.getSurveyName());
+            holder.tvMessage.setText(survey.getSurveyName());
+            holder.btnTakeSurvey.setVisibility(View.VISIBLE);
+        }else{
+            //Message
+            holder.btnTakeSurvey.setVisibility(View.GONE);
+            surveyQuestion = survey.getQuestions().get(0);
+            Log.d("demo",surveyQuestion.toString());
+            holder.tvMessage.setText(surveyQuestion.getQuestionText());
+            /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+            try {
+                Date messageDate = simpleDateFormat.parse(messages.get(position).getSurveyTime());
+                PrettyTime p = new PrettyTime();
+                holder.tvTime.setText(p.format(messageDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }*/
+
+            switch (surveyQuestion.getQuestionType())
             {
-                holder.etReplyMsg.setVisibility(View.GONE);
-                holder.rgOptions.setVisibility(View.GONE);
-                holder.tvMessage.setVisibility(View.VISIBLE);
-                holder.tvMessage.setText(surveyQuestion.getQuestion());
-                holder.imMessageTick.setVisibility(View.GONE);
-                holder.BtnSend.setVisibility(View.GONE);
-                break;
-            }
-
-            case Choice:
-            {
-                holder.tvMessage.setVisibility(View.VISIBLE);
-                holder.rgOptions.setVisibility(View.VISIBLE);
-                holder.BtnSend.setVisibility(View.VISIBLE);
-                holder.etReplyMsg.setVisibility(View.GONE);
-                holder.rgOptions.clearCheck();
-
-                if (surveyQuestion.getResponse() != null)
+                case Info:
                 {
-                    holder.tvMessage.setText(surveyQuestion.getQuestion());
-                    holder.BtnSend.setEnabled(false);
-                    holder.imMessageTick.setVisibility(View.VISIBLE);
+                    holder.etReplyMsg.setVisibility(View.GONE);
+                    holder.rgOptions.setVisibility(View.GONE);
+                    holder.tvMessage.setVisibility(View.VISIBLE);
+                    holder.tvMessage.setText(surveyQuestion.getQuestionText());
+                    holder.imMessageTick.setVisibility(View.GONE);
+                    holder.BtnSend.setVisibility(View.GONE);
+                    break;
+                }
+
+                case Choice:
+                {
+                    holder.tvMessage.setVisibility(View.VISIBLE);
+                    holder.rgOptions.setVisibility(View.VISIBLE);
+                    holder.BtnSend.setVisibility(View.VISIBLE);
+                    holder.etReplyMsg.setVisibility(View.GONE);
                     holder.rgOptions.clearCheck();
-                    if (surveyQuestion.getResponse() == ("Yes"))
+
+                    if (survey.getResponse() != null)
                     {
-                        holder.rbYes.setChecked(true);
+                        holder.tvMessage.setText(surveyQuestion.getQuestionText());
+                        holder.BtnSend.setEnabled(false);
+                        holder.imMessageTick.setVisibility(View.VISIBLE);
+                        holder.rgOptions.clearCheck();
+                        if (survey.getResponse() == ("Yes"))
+                        {
+                            holder.rbYes.setChecked(true);
+                        }
+                        else
+                        {
+                            holder.rbNo.setChecked(true);
+                        }
+                        holder.rgOptions.setEnabled(false);
+                        holder.rbNo.setEnabled(false);
+                        holder.rbYes.setEnabled(false);
                     }
                     else
                     {
-                        holder.rbNo.setChecked(true);
+                        holder.tvMessage.setText(surveyQuestion.getQuestionText());
+                        holder.BtnSend.setEnabled(true);
+                        holder.rgOptions.setEnabled(true);
+                        holder.imMessageTick.setVisibility(View.GONE);
                     }
-                    holder.rgOptions.setEnabled(false);
-                    holder.rbNo.setEnabled(false);
-                    holder.rbYes.setEnabled(false);
+                    break;
                 }
-                else
-                {
-                    holder.tvMessage.setText(surveyQuestion.getQuestion());
-                    holder.BtnSend.setEnabled(true);
-                    holder.rgOptions.setEnabled(true);
-                    holder.imMessageTick.setVisibility(View.GONE);
-                }
-                break;
-            }
 
-            case TextEntry:
-            {
-                holder.tvMessage.setVisibility(View.VISIBLE);
-                holder.rgOptions.setVisibility(View.GONE);
-                holder.BtnSend.setVisibility(View.VISIBLE);
-                holder.etReplyMsg.setVisibility(View.VISIBLE);
+                case Reminder:
+                {
+                   /* holder.tvMessage.setVisibility(View.VISIBLE);
+                    holder.rgOptions.setVisibility(View.GONE);
+                    holder.BtnSend.setVisibility(View.VISIBLE);
+                    holder.etReplyMsg.setVisibility(View.VISIBLE);
 
-                if (surveyQuestion.getResponse() != null)
-                {
-                    holder.tvMessage.setText(surveyQuestion.getQuestion());
-                    holder.etReplyMsg.setEnabled(false);
-                    holder.etReplyMsg.setText(surveyQuestion.getResponse());
-                    holder.BtnSend.setEnabled(false);
-                    holder.imMessageTick.setVisibility(View.VISIBLE);
+                    if (surveyQuestion.getResponse() != null)
+                    {
+                        holder.tvMessage.setText(surveyQuestion.getQuestion());
+                        holder.etReplyMsg.setEnabled(false);
+                        holder.etReplyMsg.setText(surveyQuestion.getResponse());
+                        holder.BtnSend.setEnabled(false);
+                        holder.imMessageTick.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        holder.tvMessage.setText(surveyQuestion.getQuestion());
+                        holder.etReplyMsg.setEnabled(true);
+                        holder.BtnSend.setEnabled(true);
+                        holder.imMessageTick.setVisibility(View.GONE);
+                    }
+                    break;*/
                 }
-                else
-                {
-                    holder.tvMessage.setText(surveyQuestion.getQuestion());
-                    holder.etReplyMsg.setEnabled(true);
-                    holder.BtnSend.setEnabled(true);
-                    holder.imMessageTick.setVisibility(View.GONE);
-                }
-                break;
             }
         }
+
 
     }
 
