@@ -26,7 +26,7 @@ namespace Homework05.API_Controllers
         //TODO
         public IList<StudyGroup> GetStudyGroupsForCoordinator(string coordinatorId)
         {
-           // var groups = db.StudyGroups.Where(s => s.StudyCoordinatorId.Equals(coordinatorId));
+           // zvar groups = db.StudyGroups.Where(s => s.StudyCoordinatorId.Equals(coordinatorId));
             return null;
         }
 

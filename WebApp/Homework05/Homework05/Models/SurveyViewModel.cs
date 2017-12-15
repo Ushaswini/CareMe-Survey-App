@@ -51,6 +51,7 @@ namespace Homework05.Models
     public class StudyGroupViewModel
     {
         public int Id { get; set; }
+        [Required]
         public string StudyGroupName { get; set; }
         public string StudyGroupCreadtedTime { get; set; }
 

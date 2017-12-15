@@ -68,6 +68,10 @@ namespace Homework05
                      "~/Scripts/knockout-{version}.js",
                       "~/Scripts/AddSurvey.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/StudyGroup").Include(
+                     "~/Scripts/knockout-{version}.js",
+                      "~/Scripts/StudyGroup.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/SurveyManage").Include(
                      "~/Scripts/knockout-{version}.js",
                       "~/Scripts/SurveyManage.js"));
