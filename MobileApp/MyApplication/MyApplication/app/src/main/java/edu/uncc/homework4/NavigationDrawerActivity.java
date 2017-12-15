@@ -166,6 +166,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             prefsEditor.remove(Constants.EMAIL);
             prefsEditor.remove(Constants.REGIONID);
             prefsEditor.remove(Constants.FULLNAME);
+            prefsEditor.remove(Constants.RECEIVE_NOTIFICATION_BOOLEAN);
             prefsEditor.commit();
             finish();
         }

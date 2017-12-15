@@ -11,5 +11,7 @@ public enum QuestionType
 {
     TextEntry,
     Choice,
-    Message
+    Scale,
+    Info,
+    Reminder
 }

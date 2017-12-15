@@ -49,6 +49,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 /**
  * A login screen that offers login via email/password.
@@ -89,11 +90,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        SharedPreferences sharedPref = this.getSharedPreferences("token",Context.MODE_PRIVATE);
-        access_token = sharedPref.getString("token","");
+        SharedPreferences sharedPref = this.getSharedPreferences(Constants.PREFS,Context.MODE_PRIVATE);
+        access_token = sharedPref.getString(Constants.AUTH_HEADER,"");
         if (!access_token.equals("")) {
             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
             intent.putExtra("access_token", access_token);
+            intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
 
@@ -471,7 +473,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("token",Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
+                                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(Constants.PREFS,Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = sharedPref.edit();
                                                 editor.putString(Constants.AUTH_HEADER,access_token);
                                                 editor.putString(Constants.USERID, info.Id);
@@ -484,6 +486,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                 showProgress(false);
                                                 Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                                                 intent.putExtra("access_token", access_token);
+                                                intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
 
                                             }

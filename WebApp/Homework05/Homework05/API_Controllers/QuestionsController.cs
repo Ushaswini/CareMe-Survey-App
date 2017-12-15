@@ -12,7 +12,7 @@ using Homework05.Models;
 
 namespace Homework05.API_Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin, StudyCoordinator")]
     public class QuestionsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
