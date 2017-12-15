@@ -57,8 +57,7 @@ namespace Homework05
 
             bundles.Add(new ScriptBundle("~/bundles/ResourceManage").Include(
                      "~/Scripts/knockout-{version}.js",
-                      "~/Scripts/ResourceManage.js",
-                      "~/Scripts/AddQuestion.js"));
+                      "~/Scripts/ResourceManage.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Questions").Include(
                      "~/Scripts/knockout-{version}.js",

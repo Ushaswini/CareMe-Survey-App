@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace Homework05.DTOs
 {
@@ -14,6 +15,16 @@ namespace Homework05.DTOs
         public string UserName { get; set; }
         public string StudyGroupName { get; set; }
         public string SurveyName { get; set; }
+        private string questionResponsesJson;
+
+        public string QuestionResponsesJson {
+            get {
+                return new JavaScriptSerializer().Serialize(QuestionResponses);
+            }
+            set {
+                this.questionResponsesJson = value;
+            }
+        }
 
         public List<QuestionResponseDTO> QuestionResponses { get; set; }
 
