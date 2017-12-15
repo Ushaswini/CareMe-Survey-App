@@ -6,6 +6,11 @@
     var tokenKey = 'accessToken';
 
     console.log("document loaded");
+
+    var userRole = sessionStorage.getItem("userRole");
+    var userId = sessionStorage.getItem("userId");
+
+    console.log(userRole);
    
     self.surveysDataTable = $("#responsesTable").DataTable(
         {
@@ -36,10 +41,18 @@
             //columns: [{ data: "StudyGroupName" }, { data: "SurveyName" }, { data: "UserName" }, { data: "SurveyTypeString" }, { data:"QuestionResponses"}]
             //columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
         });
-    LoadAllResponses();
-    LoadStudyGroups();
 
-    function LoadStudyGroups() {
+    if (userRole == "Admin")
+        LoadAllStudyGroups();
+    else
+        LoadStudyGroupsForCoordinator();
+
+    if (userRole == "Admin")
+        LoadAllResponses();
+    else
+        LoadResponsesForCoordinator();
+
+    function LoadAllStudyGroups() {
         var headers = {};
         var token = sessionStorage.getItem(tokenKey);
         if (token) {
@@ -81,20 +94,59 @@
             BindSurveysToDatatable(data);
         }).fail(showError);
     }
-    function LoadResponses() {
+
+    function LoadStudyGroupsForCoordinator() {
         var headers = {};
         var token = sessionStorage.getItem(tokenKey);
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-        //string id = Application["groupId"].ToString();
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/StudyGroups/Coordinator?coordinatorId=' + userId,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                self.studyGroups.push(data[i]);
+            }
+        }).fail(showError);
+    }
+
+    function LoadResponsesForCoordinator() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/SurveyResponses/CoordinatorSurveyResponses?coordinatorId=' + userId,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.responses = data
+            BindSurveysToDatatable();
+        }).fail(showError);
+    }
+
+    function LoadResponseForStudyGroup() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
 
         var id = self.selectedStudyGroupForSurvey();
         console.log(id);
         console.log(token);
         $.ajax({
             type: 'GET',
-            url: '/api/SurveyResponses?studyGroupId=' + id,
+            url: '/api/SurveyResponses/StudyResponses?studyGroupId=' + id,
             headers: headers,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
@@ -140,7 +192,7 @@
     
 
     $('#btnFilter').click(function () {
-        LoadResponses();
+        LoadResponseForStudyGroup();
 
     })
     $('#navigateToSurveyManager2').click(function () {
@@ -163,15 +215,8 @@
     
     function ViewModel() {
 
-        self.userName = ko.observable();
-        self.userPassword = ko.observable();
         self.studyGroups = ko.observableArray([]);
         self.selectedStudyGroupForSurvey = ko.observable();
-        //self.selectedStudyGroupForSurvey(self.studyGroups()[0]);
-
-        self.userEmail = ko.observable();
-        self.selectedStudyGroup = ko.observable();
-        //self.selectedStudyGroupForSurvey = ko.observable();
 
         self.result = ko.observable();
         self.errors = ko.observableArray([]);

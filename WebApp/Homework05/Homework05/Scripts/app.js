@@ -47,6 +47,7 @@
                 console.log(data.resultObject.UserId);
                 sessionStorage.setItem(tokenKey, data.resultObject.Access_Token);
                 sessionStorage.setItem("userId", data.resultObject.UserId);
+                sessionStorage.setItem("userRole", data.resultObject.UserRole);
                 console.log(data.resultObject.UserId);
                 window.location.href = data.resultObject.UserRole + '/Dashboard';
             } else {
