@@ -4,10 +4,153 @@
     ko.applyBindings(app);
 
     var tokenKey = 'accessToken';
+    var user = sessionStorage.getItem('user');
+    var headers = {};
+    var token = sessionStorage.getItem(tokenKey);
+    if (token) {
+        headers.Authorization = 'Bearer ' + token;
+    }
+    $.ajax({
+        type: 'GET',
+        url: '/api/Users/Profile?id=' + user,
+        headers: headers,
+        contentType: 'application/json; charset=utf-8'
+    }).done(function (data) {
+        console.log(data);
+        self.currentSC(data.UserName);
+        title.innerText = title.innerText + " for " + data.UserName;
+        titleGroup.innerText = titleGroup.innerText + " for " + data.UserName;
+        //self.users = data;
+        /*for (var i = 0; i < data.length; i++) {
+            self.users.push(data[i]);
+            console.log("users in table are" + data[i]);
+        }*/
+
+       // BindUsersToDatatable(data);
+    }).fail(showError);
 
     console.log("document loaded");
+
+    self.usersDataTable = $("#usersTable").DataTable(
+        {
+            select: true,
+            data: self.users,
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
+            columns: [{ data: "UserName" },  { data: "StudyGroupName" }]
+        });
+    LoadUsers();
+    self.groupsTable = $("#groupsTable").DataTable(
+        {
+            select: true,
+            data: self.users,
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
+            columns: [{ data: "StudyGroupName" }, { data: "CreatedTime" }]
+        });
+    LoadStudyGroups();
+
+    function LoadStudyGroups() {
+        var headers = {};
+        var user = sessionStorage.getItem('user');
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/StudyGroups/Coordinator?coordinatorId=' + user,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.groups = data;
+            /*for (var i = 0; i < data.length; i++) {
+                self.users.push(data[i]);
+                console.log("users in table are" + data[i]);
+            }*/
+
+            BindGroupsToDatatable(data);
+        }).fail(showError);
+    }
+
+    function LoadUsers() {
+        var headers = {};
+        var user = sessionStorage.getItem('user');
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/Users/Coordinators?coordinatorId=' + user,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.users = data;
+            /*for (var i = 0; i < data.length; i++) {
+                self.users.push(data[i]);
+                console.log("users in table are" + data[i]);
+            }*/
+
+            BindUsersToDatatable(data);
+        }).fail(showError);
+    }
+
+    function BindUsersToDatatable(data) {
+        console.log(self.users);
+        self.usersDataTable.clear();
+        self.usersDataTable.destroy();
+        self.usersDataTable = $("#usersTable").DataTable(
+            {
+                select: true,
+                data: self.users,
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ],
+                columns: [{ data: "UserName" },  { data: "StudyGroupName" }]
+            });
+       /* $('#usersTable tbody').on('click', 'tr', function () {
+            var data = self.usersDataTable.row(this).data();
+            //alert('You clicked on ' + data + '\'s row');
+            console.log(data.Id);
+            sessionStorage.setItem('user', data.Id);
+            window.location.href = yourApp.Urls.userMessagesUrl;
+        });*/
+    }
+    function BindGroupsToDatatable(data) {
+        console.log(self.groups);
+        self.groupsTable.clear();
+        self.groupsTable.destroy();
+        self.groupsTable = $("#groupsTable").DataTable(
+            {
+                select: true,
+                data: self.groups,
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ],
+                columns: [{ data: "StudyGroupName" }, { data: "CreatedTime" }]
+            });
+       /* $('#groupsTable tbody').on('click', 'tr', function () {
+            var data = self.usersDataTable.row(this).data();
+            //alert('You clicked on ' + data + '\'s row');
+            console.log(data.Id);
+            sessionStorage.setItem('user', data.Id);
+            window.location.href = yourApp.Urls.userMessagesUrl;
+        });*/
+    }
+  
    
-    self.surveysDataTable = $("#surveysTable").DataTable(
+   /* self.surveysDataTable = $("#surveysTable").DataTable(
         {
             data: self.surveys,
             dom: 'Bfrtip',
@@ -20,7 +163,7 @@
 
     $('#surveyTable tbody').on('click', 'tr', function () {
         
-    });
+    });*/
 
    
 
@@ -65,12 +208,15 @@
         self.userPassword = ko.observable();
         self.studyGroups = ko.observableArray([]);
         self.surveys = {}
+        self.users = {}
+        self.groups = {}
         self.userEmail = ko.observable();
         self.selectedStudyGroup = ko.observable();
         self.selectedStudyGroupForSurvey = ko.observable();
 
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
+        self.currentSC = ko.observable();
     }
 
     function showError(jqXHR) {

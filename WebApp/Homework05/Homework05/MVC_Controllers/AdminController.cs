@@ -17,6 +17,12 @@ namespace Homework05.MVC_Controllers
             return View("~/Views/Admin/Dashboard.cshtml");
 
         }
+
+        public ActionResult Manage()
+        {
+            ViewBag.Title = "Manage";
+            return View("~/Views/Admin/Manage.cshtml");
+        }
         
         public ActionResult AnalyseResponses()
         {

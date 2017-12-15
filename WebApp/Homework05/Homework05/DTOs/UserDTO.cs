@@ -12,5 +12,7 @@ namespace Homework05.DTOs
         public string Email { get; set; }
         public int StudyGroupId { get; set; }
         public string StudyGroupName { get; set; }
+
+        public string CoordinatorName { get; set; }
     }
 }

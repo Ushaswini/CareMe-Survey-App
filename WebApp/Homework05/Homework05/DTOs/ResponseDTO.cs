@@ -20,6 +20,8 @@ namespace Homework05.DTOs
 
         public SurveyType SurveyType { get; set; }
 
+        public string SurveyTypeString { get; set; }
+
         public List<QuestionResponseDTO> QuestionResponses { get; set; }
 
        
@@ -39,5 +41,10 @@ namespace Homework05.DTOs
         public string ResponseText { get; set; }
 
         public string ResponseReceivedTime { get; set; }
+
+        public override string ToString()
+        {
+            return QuestionText + "" + ResponseText;
+        }
     }
 }

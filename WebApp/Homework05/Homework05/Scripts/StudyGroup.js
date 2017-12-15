@@ -24,6 +24,7 @@
         var headers = {};
         var token = sessionStorage.getItem(tokenKey);
         var userId = sessionStorage.getItem("userId");
+        console.log(userId);
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }

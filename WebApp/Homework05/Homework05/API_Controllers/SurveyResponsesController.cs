@@ -43,6 +43,7 @@ namespace Homework05.API_Controllers
             var ques = db.SurveyResponses.GroupBy(r => r.SurveyId);
 
             string roleName = "StudyCoordinator";
+            string respText = "";
             var role = AppRoleManager.Roles.Single(r => r.Name == roleName);
             var coordinators = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).ToList();
 
@@ -73,11 +74,20 @@ namespace Homework05.API_Controllers
                         questions.Clear();
                         foreach (var p in r.Value.ToList())
                         {
+                            if (p.question.QuestionType == QuestionType.Scale)
+                            {
+                                respText = p.response.ResponseText + " in [" + p.question.Minimum + ", " + p.question.Maximum + " ]";
+                            }
+                            else
+                            {
+                                respText = p.response.ResponseText;
+                            }
 
                             var questionDTO = new QuestionResponseDTO
                             {
                                 ResponseReceivedTime = p.response.ResponseReceivedTime,
-                                ResponseText = p.response.ResponseText,
+                                
+                                ResponseText = respText,
                                 QuestionText = p.question.QuestionText,
                                 QuestionId = p.question.Id,
                                 QuestionType = p.question.QuestionType,
@@ -96,7 +106,8 @@ namespace Homework05.API_Controllers
                             UserName = r.Value.ElementAt(0).user.UserName,
                             QuestionResponses = questions,
                             StudyGroupName = r.Value.ElementAt(0).study.StudyGroupName,
-                            StudyCoordinatorName = coordinator.UserName
+                            StudyCoordinatorName = coordinator.UserName,
+                            SurveyTypeString =((SurveyType) r.Value.ElementAt(0).surveyObj.SurveyType).ToString()
 
                         };
 

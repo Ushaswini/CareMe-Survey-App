@@ -43,8 +43,28 @@ namespace Homework05.API_Controllers
                 _userManager = value;
             }
         }
-        // GET: api/Users
 
+        [Route("Profile")]
+        public UserInfoViewModel GetUserProfile(string id)
+        {
+            var user = db.Users
+                            .Where(u => u.Id.Equals(id))
+                            .Select(u => new UserInfoViewModel {
+                                Id = u.Id,
+                                UserName = u.UserName
+                            })
+                            .FirstOrDefault();
+            return user;
+        }
+        // GET: api/Users
+        [Route("coordinators")]
+        public List<UserInfoViewModel> GetCoordinators()
+        {
+            string roleName = "StudyCoordinator";
+            var role = AppRoleManager.Roles.Single(r => r.Name == roleName);
+            var coordinators = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).Select(c => new UserInfoViewModel{ UserName = c.UserName,Id = c.Id }).ToList();
+            return coordinators;
+        }
         public List<UserDTO> GetAllUsers()
         {
             List<UserDTO> users = new List<UserDTO>();
@@ -52,8 +72,9 @@ namespace Homework05.API_Controllers
             var role = AppRoleManager.Roles.Single(r => r.Name == roleName);
             var list = from user in db.Users
                        join user_group in db.X_User_Groups on user.Id equals user_group.UserId
-                       join study_group in db.StudyGroups on user_group.StudyGroupId equals study_group.Id                       
-                       select new { user, user_group, study_group };
+                       join study_group in db.StudyGroups on user_group.StudyGroupId equals study_group.Id
+                       join coordinator in db.X_Coordinator_Groups.Include("Coordinator") on study_group.Id equals coordinator.StudyGroupId
+                       select new { user, user_group, study_group, coordinator, Coordinator = coordinator.Coordinator };
 
             foreach(var u in list.ToList())
             {
@@ -63,7 +84,8 @@ namespace Homework05.API_Controllers
                     UserName = u.user.UserName,
                     Email = u.user.Email,
                     StudyGroupId = u.user_group.StudyGroupId,
-                    StudyGroupName = u.study_group.StudyGroupName
+                    StudyGroupName = u.study_group.StudyGroupName,
+                    CoordinatorName = u.coordinator.Coordinator.UserName
                 });
             }
 

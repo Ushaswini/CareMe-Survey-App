@@ -14,7 +14,26 @@
             buttons: [
                 'print'
             ],
-            columns: [{ data: "StudyGroupName" }, { data: "SurveyName" }, { data: "UserName" }, { data: "SurveyType" }]
+            columns: [{ data: "StudyGroupName" },
+            { data: "SurveyName" },
+            { data: "UserName" },
+            { data: "SurveyTypeString" },
+            {
+                "title": "Responses",
+                "data": "QuestionResponses",
+                "render": function (d) {
+                    if (d !== null) {
+                        var table = "<table>";
+                        $.each(d, function (k, v) {
+                            table += "<tr><td>" + v.QuestionText + "</td><td>" + "-" + "</td><td>" + v.ResponseText + "</td></tr>";
+                        });
+                        return table + "</table>";
+                    } else {
+                        return "";
+                    }
+                }
+            }]
+            //columns: [{ data: "StudyGroupName" }, { data: "SurveyName" }, { data: "UserName" }, { data: "SurveyTypeString" }, { data:"QuestionResponses"}]
             //columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
         });
     LoadAllResponses();
@@ -96,7 +115,25 @@
                 buttons: [
                     'print'
                 ],
-                columns: [{ data: "StudyGroupName" }, { data: "SurveyName" }, { data: "UserName" }, { data: "SurveyType" }]
+                columns: [{ data: "StudyGroupName" },
+                    { data: "SurveyName" },
+                    { data: "UserName" },
+                    { data: "SurveyTypeString" },
+                    {
+                        "title": "Responses",
+                        "data": "QuestionResponses",
+                        "render": function (d) {
+                            if (d !== null) {
+                                var table = "<table>";
+                                $.each(d, function (k, v) {
+                                    table += "<tr><td>" + v.QuestionText + "</td><td>" + "-" + "</td><td>" + v.ResponseText + "</td></tr>";
+                                });
+                                return table + "</table>";
+                            } else {
+                                return "";
+                            }
+                        }
+                    }]
             });
     }
 

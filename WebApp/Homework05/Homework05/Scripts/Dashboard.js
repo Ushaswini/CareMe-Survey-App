@@ -17,11 +17,23 @@
             buttons: [
                 'print'
             ],
+            columns: [{ data: "UserName" }, { data: "CoordinatorName" }, { data: "StudyGroupName" } ]
+        });
+
+    self.coordinatorsTable = $("#coordinatorsTable").DataTable(
+        {
+            select: true,
+            data: self.coordinators,
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
             columns: [{ data: "UserName" }]
         });
 
     LoadStudyGroups();
     LoadUsers();
+    LoadCoordinators();
 
     function LoadUsers() {
         var headers = {};
@@ -46,6 +58,30 @@
             BindUsersToDatatable(data);
         }).fail(showError);
     }
+    function LoadCoordinators() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/Users/coordinators',
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.coordinators = data;
+            /*for (var i = 0; i < data.length; i++) {
+                self.users.push(data[i]);
+                console.log("users in table are" + data[i]);
+            }*/
+
+            BindCoordinatorsToDatatable(data);
+        }).fail(showError);
+    }
+    
 
     function LoadStudyGroups() {
         var headers = {};
@@ -66,7 +102,28 @@
             }
         }).fail(showError);
     }
-    
+    function BindCoordinatorsToDatatable(data) {
+        console.log(self.coordinators);
+        self.coordinatorsTable.clear();
+        self.coordinatorsTable.destroy();
+        self.coordinatorsTable = $("#coordinatorsTable").DataTable(
+            {
+                select: true,
+                data: self.coordinators,
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ],
+                columns: [{ data: "UserName" }]
+            });
+        $('#coordinatorsTable tbody').on('click', 'tr', function () {
+            var data = self.coordinatorsTable.row(this).data();
+            //alert('You clicked on ' + data + '\'s row');
+            console.log(data.Id);
+            sessionStorage.setItem('user', data.Id);
+            window.location.href = yourApp.Urls.userMessagesUrl;
+        });
+    }
     function BindUsersToDatatable(data) {
         console.log(self.users);
         self.usersDataTable.clear();
@@ -79,15 +136,48 @@
                 buttons: [
                     'print'
                 ],
-                columns: [{ data: "UserName" }]
+                columns: [{ data: "UserName" }, { data: "CoordinatorName" }, { data: "StudyGroupName" }]
             });
         $('#usersTable tbody').on('click', 'tr', function () {
             var data = self.usersDataTable.row(this).data();
             //alert('You clicked on ' + data + '\'s row');
             console.log(data.Id);
-            sessionStorage.setItem('user', data.Id);
-            window.location.href = yourApp.Urls.userMessagesUrl;
+            //sessionStorage.setItem('user', data.Id);
+            //window.location.href = yourApp.Urls.userMessagesUrl;
         });
+    }
+    $('#btnFilter').click(function () {
+        LoadUsersFiltered();
+
+    })
+
+    function LoadUsersFiltered() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        //string id = Application["groupId"].ToString();
+
+        var urlTopass;// = self.selectedStudyGroupForSurvey();
+
+        if ($('#filterUsers').val() == 0) {
+            urlTopass = '/api/Users/Coordinators'
+        } else {
+            urlTopass = '/api/Users/StudyGroups'
+        }
+        console.log(id);
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/SurveyResponses?studyGroupId=' + id,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.responses = data;
+            BindSurveysToDatatable(data);
+        }).fail(showError);
     }
 
     $('input[name=frequency]').change(function () {
@@ -201,7 +291,37 @@
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
        
+        AddStudyCoordinator = function () {
 
+            self.result('');
+            self.errors.removeAll();
+
+            var data = {
+                UserName: self.userName(),
+                Password: self.userPassword(),
+                ConfirmPassword: self.userConfirmPassword(),
+                Email: self.userEmail()
+            };
+            var headers = {};
+            var token = sessionStorage.getItem(tokenKey);
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
+            console.log("Data to add" + data);
+            $.ajax({
+                type: 'POST',
+                url: '/api/Account/AddStudyCoordinator',
+                headers: headers,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (data) {
+                self.result("Done!");
+
+                $('#addCoordinatorModal').modal('toggle');
+                //Load users
+                LoadCoordinators();
+            }).fail(showError);
+        }
         self.AddUser = function () {
 
             self.result('');
@@ -234,37 +354,7 @@
             }).fail(showError);
         }
 
-        self.AddStudyCoordinator = function () {
-
-            self.result('');
-            self.errors.removeAll();
-
-            var data = {
-                UserName: self.userName(),
-                Password: self.userPassword(),
-                ConfirmPassword: self.userConfirmPassword(),
-                Email: self.userEmail()
-            };
-            var headers = {};
-            var token = sessionStorage.getItem(tokenKey);
-            if (token) {
-                headers.Authorization = 'Bearer ' + token;
-            }
-            console.log("Data to add" + data);
-            $.ajax({
-                type: 'POST',
-                url: '/api/Account/AddStudyCoordinator',
-                headers: headers,
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function (data) {
-                self.result("Done!");
-
-                $('#addCoordinatorModal').modal('toggle');
-                //Load users
-                LoadUsers();
-            }).fail(showError);
-        }
+        
       
     }
 
