@@ -54,6 +54,13 @@
                 ],
                 columns: [{ data: "Id" }, { data: "StudyGroupName" }, { data: "CreatedTime" }]
             });
+        $('#studyGroupTable tbody').on('click', 'tr', function () {
+            var data = self.studyGroupTable.row(this).data();
+            //alert('You clicked on ' + data + '\'s row');
+            console.log(data.Id);
+            sessionStorage.setItem('group', data.Id);
+            window.location.href = yourApp.Urls.userListUrl;
+        });
     }
 
     function ViewModel() {

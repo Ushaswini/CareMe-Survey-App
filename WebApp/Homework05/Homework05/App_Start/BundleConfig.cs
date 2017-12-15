@@ -81,6 +81,9 @@ namespace Homework05
             bundles.Add(new ScriptBundle("~/bundles/MessageMange").Include(
                      "~/Scripts/knockout-{version}.js",
                       "~/Scripts/MessageManage.js"));
+            bundles.Add(new ScriptBundle("~/bundles/ListUsers").Include(
+                     "~/Scripts/knockout-{version}.js",
+                      "~/Scripts/ListUser.js"));
 
         }
     }

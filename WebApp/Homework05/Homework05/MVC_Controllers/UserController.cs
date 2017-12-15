@@ -7,13 +7,21 @@ using System.Web.Mvc;
 
 namespace Homework05.MVC_Controllers
 {
-    [AuthorizationFilter("Admin")]
+    
     public class UserController : Controller
     {
         // GET: User
+        [AuthorizationFilter("Admin")]
         public ActionResult Index()
         {
             ViewBag.Title = "Message Manager";
+            return View();
+        }
+
+        [AuthorizationFilter("StudyCoordinator,Admin")]
+        public ActionResult List()
+        {
+            ViewBag.Title = "User Manager";
             return View();
         }
     }

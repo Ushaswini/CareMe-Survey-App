@@ -336,6 +336,7 @@
     <None Include="Properties\PublishProfiles\CareMeSurvey-NC - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\AddQuestion.js" />
+    <Content Include="Scripts\ListUser.js" />
     <Content Include="Scripts\StudyGroup.js" />
     <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\DataTables\buttons.datatables.css" />
@@ -390,6 +391,7 @@
     <Content Include="Views\StudyCoordinator\Dashboard.cshtml" />
     <Content Include="Views\StudyCoordinator\ManageSurveys.cshtml" />
     <Content Include="Views\Admin\Manage.cshtml" />
+    <Content Include="Views\User\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
