@@ -275,12 +275,14 @@ namespace Homework05.API_Controllers
                                                             Options = r.Question.Options
                                                         })
                                                         .ToList();
-
+                var survey = db.X_Survey_Groups.Where(s => s.Id == id).Include(s => s.Survey).FirstOrDefault();
                 var responseDTO = new ResponseDTO
                 {
                     SurveyId = id,
                     UserName = user.UserName,
-                    QuestionResponses = responsesForQuestionsInSurvey
+                    QuestionResponses = responsesForQuestionsInSurvey,
+                    SurveyType = survey.Survey.SurveyType,
+                    StudyGroupId = survey.StudyGroupId
                 };
 
                 responses.Add(responseDTO);
@@ -355,8 +357,9 @@ namespace Homework05.API_Controllers
 
 
         // GET: api/Surveys/5
+        [Route("GetSurvey")]
         [ResponseType(typeof(Survey))]
-        public IHttpActionResult GetSurvey(string id)
+        public IHttpActionResult GetSurvey(int id)
         {
             Survey survey = db.Surveys.Find(id);
             if (survey == null)
@@ -364,7 +367,44 @@ namespace Homework05.API_Controllers
                 return NotFound();
             }
 
-            return Ok(survey);
+            List<SurveyDTO> surveysSaved = new List<SurveyDTO>();
+
+            var surveysInStudyGroup = from survey_group in db.X_Survey_Groups.Include("Survey")
+                                      join coordinator_group in db.X_Coordinator_Groups.Include("Coordinator") on survey_group.StudyGroupId equals coordinator_group.StudyGroupId
+                                      where survey_group.SurveyId == id
+                                      select new { survey_group, coordinator_group, Survey = survey_group.Survey, Coordinator = coordinator_group.Coordinator };
+            foreach (var s in surveysInStudyGroup.ToList())
+            {
+                var questionsInSurvey = db.X_Survey_Questions
+                                            .Include(q => q.Question)
+                                            .Where(q => q.SurveyId == s.survey_group.SurveyId)
+                                            .Select(q => new QuestionDTO
+                                            {
+                                                Id = q.Question.Id,
+                                                QuestionText = q.Question.QuestionText,
+                                                QuestionType = q.Question.QuestionType,
+                                                Maximum = q.Question.Maximum,
+                                                Minimum = q.Question.Minimum,
+                                                StepSize = q.Question.StepSize,
+                                                Options = q.Question.Options
+                                            })
+                                            .ToList();
+                var surveyDTO = new SurveyDTO
+                {
+                    SurveyId = s.survey_group.Id,
+                    StudyGroupId = s.survey_group.StudyGroupId,
+                    SurveyName = s.Survey.SurveyName,
+                    StudyCoordinatorId = s.Coordinator.Id,
+                    StudyCoordinatorName = s.Coordinator.UserName,
+                    SurveyType = s.survey_group.Survey.SurveyType,
+                    Questions = questionsInSurvey.ToList()
+                };
+
+                surveysSaved.Add(surveyDTO);
+            }
+
+           
+            return Ok(surveysSaved[0]);
         }
 
         // PUT: api/Surveys/5

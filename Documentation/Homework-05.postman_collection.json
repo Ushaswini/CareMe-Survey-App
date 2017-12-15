@@ -13,27 +13,26 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEyMTQ5NjQ4LCJuYmYiOjE1MTIwNjMyNDh9.uMhlTNXVaL6XNzTuqONsAJqhUs-Bgduqdv32ANmrcvU"
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImI2NmY0NjQ0LTdjZjgtNDYzNy05MTVmLWE2NzZmYWQ3N2U2NiIsInN1YiI6IlVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTMzODM2MjcsIm5iZiI6MTUxMzI5NzIyN30.GZQpzWGIgSlOfsWpaLaPrN_atRNeaVpblHyiwpPgF-0"
 					}
 				],
 				"body": {},
 				"url": {
-					"raw": "http://careme-surveypart2.azurewebsites.net/api/Surveys/GetSurvey?userId=17128ecf-c864-4ed4-8656-6c01efa295e6",
-					"protocol": "http",
+					"raw": "caremesurvey-nc.azurewebsites.net/api/Surveys/UserSurveys?userId=a7beb3e8-d76d-4f5f-bc3c-0491c091b22b",
 					"host": [
-						"careme-surveypart2",
+						"caremesurvey-nc",
 						"azurewebsites",
 						"net"
 					],
 					"path": [
 						"api",
 						"Surveys",
-						"GetSurvey"
+						"UserSurveys"
 					],
 					"query": [
 						{
 							"key": "userId",
-							"value": "17128ecf-c864-4ed4-8656-6c01efa295e6",
+							"value": "a7beb3e8-d76d-4f5f-bc3c-0491c091b22b",
 							"equals": true
 						}
 					]
@@ -174,13 +173,13 @@
 					"urlencoded": [
 						{
 							"key": "SurveyId",
-							"value": "3",
+							"value": "4",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "StudyGroupId",
-							"value": "4",
+							"value": "1",
 							"description": "",
 							"type": "text"
 						},
@@ -205,7 +204,7 @@
 						},
 						{
 							"key": "Time1",
-							"value": "10:50",
+							"value": "21:48",
 							"description": "",
 							"type": "text"
 						},
@@ -281,12 +280,13 @@
 				],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:59743/api/Users",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Users",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"Users"
@@ -347,15 +347,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"UserId\": \"f84c09c8-eb9d-4122-8c98-84a8455e81a7\",\n\t\"StudyGroupId\" : 4,\n\t\"SurveyId\":5,\n\t\"ResponseReceivedTime\":\"14-12-17\",\n\t\"Responses\": [\n\t\t{\n\t\t\t\"QuestionId\" : 1,\n\t\t\t\"ResponseText\": \"Yes\"\n\t\t},\n\t\t{\n\t\t\t\"QuestionId\" : 2,\n\t\t\t\"ResponseText\": \"No\"\t\n\t\t},\n\t\t{\n\t\t\t\"QuestionId\" : 3,\n\t\t\t\"ResponseText\": \"No\"\t\n\t\t},\n\t\t{\n\t\t\t\"QuestionId\" : 4,\n\t\t\t\"ResponseText\": \"No\"\t\n\t\t}\n\t\t]\n}"
+					"raw": "{\n\t\"UserId\": \"a7beb3e8-d76d-4f5f-bc3c-0491c091b22b\",\n\t\"StudyGroupId\" : 1,\n\t\"SurveyId\":5,\n\t\"ResponseReceivedTime\":\"14-12-17\",\n\t\"Responses\": [\n\t\t{\n\t\t\t\"QuestionId\" : 7,\n\t\t\t\"ResponseText\": \"Yes\"\n\t\t}\n\t\t\n\t\t]\n}"
 				},
 				"url": {
-					"raw": "http://localhost:59743/api/SurveyResponses",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/SurveyResponses",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"SurveyResponses"
@@ -430,7 +431,7 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "f84c09c8-eb9d-4122-8c98-84a8455e81a7",
+							"value": "f84c09c8-eb9d-4122-8c98-84a8455e81a7\n",
 							"equals": true
 						}
 					]
@@ -490,11 +491,13 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:59743/api/Account/AddStudyCoordinator",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Account/AddStudyCoordinator",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"Account",
@@ -526,24 +529,26 @@
 						},
 						{
 							"key": "username",
-							"value": "Admin",
+							"value": "User1",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "Admin@6010",
+							"value": "User1@6010",
 							"description": "",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:59743/oauth2/token",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/oauth2/token",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"oauth2",
 						"token"
@@ -565,10 +570,10 @@
 				],
 				"body": {},
 				"url": {
-					"raw": "http://careme-surveypart2.azurewebsites.net/api/Questions",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Questions",
 					"protocol": "http",
 					"host": [
-						"careme-surveypart2",
+						"caremesurvey-nc",
 						"azurewebsites",
 						"net"
 					],
@@ -607,7 +612,7 @@
 						},
 						{
 							"key": "QuestionText",
-							"value": "Did you have snacks today?",
+							"value": "Did you have walk after eating today?",
 							"description": "",
 							"type": "text"
 						},
@@ -626,12 +631,13 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:59743/api/Questions",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Questions",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"Questions"
@@ -657,15 +663,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"SurveyName\":\"Test survey - 4\",\n\t\"SurveyType\":0,\n\t\"QuestionIds\":[1]\n}"
+					"raw": "{\n\t\"SurveyName\":\"Test message-2\",\n\t\"SurveyType\":1,\n\t\"QuestionIds\":[8]\n}"
 				},
 				"url": {
-					"raw": "http://localhost:59743/api/Surveys/Post",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Surveys/Post",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"Surveys",
@@ -695,42 +702,44 @@
 					"urlencoded": [
 						{
 							"key": "username",
-							"value": "User9",
+							"value": "User4",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "User9@6010",
+							"value": "User4@6010",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "confirmpassword",
-							"value": "User9@6010",
+							"value": "User4@6010",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "user9@gmail.com",
+							"value": "user4@gmail.com",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "StudyGroupId",
-							"value": "4",
+							"value": "3",
 							"description": "",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:59743/api/Account/AddUser",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Account/AddUser",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"Account",
@@ -756,13 +765,13 @@
 					"urlencoded": [
 						{
 							"key": "StudyCoordinatorId",
-							"value": "eb18568e-f689-436c-9b4c-762113f68345",
+							"value": "253f66ef-b85b-48e8-8bd5-fef01ba313bc",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "StudyGroupName",
-							"value": "Test study group - 1 for SC-3",
+							"value": "Test study group - 2 for SC-1",
 							"description": "",
 							"type": "text"
 						},
@@ -775,11 +784,13 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:59743/api/StudyGroups",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/StudyGroups",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"StudyGroups"
@@ -832,12 +843,13 @@
 				],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:59743/api/Surveys/StudyGroupSurveys?studyGroupId=4",
+					"raw": "http://caremesurvey-nc.azurewebsites.net/api/Surveys/StudyGroupSurveys?studyGroupId=1",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"caremesurvey-nc",
+						"azurewebsites",
+						"net"
 					],
-					"port": "59743",
 					"path": [
 						"api",
 						"Surveys",
@@ -846,7 +858,7 @@
 					"query": [
 						{
 							"key": "studyGroupId",
-							"value": "4",
+							"value": "1",
 							"equals": true
 						}
 					]
@@ -1014,6 +1026,110 @@
 						{
 							"key": "surveyId",
 							"value": "5",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsersForSC",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImYxOGVmMzBiLWU0YTktNGZmNC04MjI1LWMzMzhhODZkNWJhMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEzMzYzNDMxLCJuYmYiOjE1MTMyNzcwMzF9.jIBWAc3aqw8LbIN8McY0KZG5XShEQFEhAhrP7NOIabI"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:59743/api/Users/Coordinators?coordinatorId=eb18568e-f689-436c-9b4c-762113f68345",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59743",
+					"path": [
+						"api",
+						"Users",
+						"Coordinators"
+					],
+					"query": [
+						{
+							"key": "coordinatorId",
+							"value": "eb18568e-f689-436c-9b4c-762113f68345",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsersForSG",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImYxOGVmMzBiLWU0YTktNGZmNC04MjI1LWMzMzhhODZkNWJhMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEzMzYzNDMxLCJuYmYiOjE1MTMyNzcwMzF9.jIBWAc3aqw8LbIN8McY0KZG5XShEQFEhAhrP7NOIabI"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:59743/api/Users/StudyGroups?groupId=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59743",
+					"path": [
+						"api",
+						"Users",
+						"StudyGroups"
+					],
+					"query": [
+						{
+							"key": "groupId",
+							"value": "3",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetSurveyById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImE3YmViM2U4LWQ3NmQtNGY1Zi1iYzNjLTA0OTFjMDkxYjIyYiIsInN1YiI6IlVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTM0MDAxMjEsIm5iZiI6MTUxMzMxMzcyMX0.NArV9mh13b8A0FpQF22E3fNY49-2IZh9M0qiJqlHY4Q"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "localhost:59743/api/Surveys/GetSurvey?id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "59743",
+					"path": [
+						"api",
+						"Surveys",
+						"GetSurvey"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
 							"equals": true
 						}
 					]

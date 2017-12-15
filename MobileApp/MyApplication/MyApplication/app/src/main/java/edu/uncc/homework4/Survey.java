@@ -11,19 +11,26 @@ import java.util.ArrayList;
 
 public class Survey {
     int surveytype, surveyId,studyGroupId;
-    String surveyName, response;
+    String surveyName;
     String studyCoordinatorId;
 
     public int getSurveytype() {
         return surveytype;
     }
 
-    public String getResponse() {
-        return response;
-    }
 
-    public void setResponse(String response) {
-        this.response = response;
+
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "surveytype=" + surveytype +
+                ", surveyId=" + surveyId +
+                ", studyGroupId=" + studyGroupId +
+                ", surveyName='" + surveyName + '\'' +
+                ", studyCoordinatorId='" + studyCoordinatorId + '\'' +
+                ", studyCoordinatorName='" + studyCoordinatorName + '\'' +
+                ", Questions=" + Questions +
+                '}';
     }
 
     public void setSurveytype(int surveytype) {

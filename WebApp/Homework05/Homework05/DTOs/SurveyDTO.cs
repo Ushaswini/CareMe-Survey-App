@@ -29,4 +29,12 @@ namespace Homework05.DTOs
         public double Maximum { get; set; }
         public double StepSize { get; set; }
     }
+
+    public class StudyGroupDTO
+    {
+        public int Id { get; set; }
+        public string CoordinatorId { get; set; }
+        public string StudyGroupName { get; set; }
+        public string CreatedTime { get; set; }
+    }
 }

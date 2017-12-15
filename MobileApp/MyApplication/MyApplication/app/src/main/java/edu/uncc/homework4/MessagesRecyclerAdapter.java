@@ -89,13 +89,25 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             vContext = context;
 
             if(BtnSend.isEnabled()){
-                //if (rgOptions.getCheckedRadioButtonId() != -1 || etReplyMsg.getText() != null){
-                if (rgOptions.getCheckedRadioButtonId() != -1 || !etReplyMsg.getText().toString().equals("")){
-                    final int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(position, rgOptions.getCheckedRadioButtonId(), etReplyMsg.getText().toString());
+                BtnSend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("demo","inside button click");
+                        //if (rgOptions.getCheckedRadioButtonId() != -1 || etReplyMsg.getText() != null){
+                        if (rgOptions.getCheckedRadioButtonId() != -1 || !etReplyMsg.getText().toString().equals("")){
+                            final int position = getAdapterPosition();
+                            Log.d("demo","clicking");
+                            if (position != RecyclerView.NO_POSITION) {
+                                listener.onItemClick(position, rgOptions.getCheckedRadioButtonId(), etReplyMsg.getText().toString());
+                            }
+                        }
                     }
-                }
+                });
+
+            }
+
+            if(btnTakeSurvey.isEnabled()){
+                //Take to survey stack
             }
         }
 
@@ -140,7 +152,16 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             holder.BtnSend.setVisibility(View.GONE);
             Log.d("demo", survey.getSurveyName());
             holder.tvMessage.setText(survey.getSurveyName());
+
             holder.btnTakeSurvey.setVisibility(View.VISIBLE);
+            holder.btnTakeSurvey.setEnabled(true);
+            holder.btnTakeSurvey.setText("TAKE SURVEY");
+
+            if(survey.getQuestions().get(0).getResponse()!= null){
+                //survey taken
+                holder.btnTakeSurvey.setText("SURVEY TAKEN");
+                holder.btnTakeSurvey.setEnabled(false);
+            }
         }else{
             //Message
             holder.btnTakeSurvey.setVisibility(View.GONE);
@@ -177,13 +198,14 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                     holder.etReplyMsg.setVisibility(View.GONE);
                     holder.rgOptions.clearCheck();
 
-                    if (survey.getResponse() != null)
+                    if (surveyQuestion.getResponse() != null)
                     {
+                        Log.d("demo","In response");
                         holder.tvMessage.setText(surveyQuestion.getQuestionText());
                         holder.BtnSend.setEnabled(false);
                         holder.imMessageTick.setVisibility(View.VISIBLE);
                         holder.rgOptions.clearCheck();
-                        if (survey.getResponse() == ("Yes"))
+                        if (surveyQuestion.getResponse().equals("Yes"))
                         {
                             holder.rbYes.setChecked(true);
                         }

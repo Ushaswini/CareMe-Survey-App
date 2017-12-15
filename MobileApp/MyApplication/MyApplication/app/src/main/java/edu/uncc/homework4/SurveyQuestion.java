@@ -11,12 +11,19 @@ public class SurveyQuestion implements Serializable {
 
 
     int questionId;
-    String questionText,options;
+    String questionText,options,response;
     double minimum, maximum, stepsize;
 
 
     QuestionType questionType;
 
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
     public QuestionType getQuestionType() {
         return questionType;
     }
@@ -77,5 +84,20 @@ public class SurveyQuestion implements Serializable {
     public void setStepsize(double stepsize) {
         this.stepsize = stepsize;
     }
+
+    @Override
+    public String toString() {
+        return "SurveyQuestion{" +
+                "questionId=" + questionId +
+                ", questionText='" + questionText + '\'' +
+                ", options='" + options + '\'' +
+                ", response='" + response + '\'' +
+                ", minimum=" + minimum +
+                ", maximum=" + maximum +
+                ", stepsize=" + stepsize +
+                ", questionType=" + questionType +
+                '}';
+    }
 }
+
 
