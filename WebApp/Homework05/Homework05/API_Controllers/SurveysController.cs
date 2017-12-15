@@ -116,8 +116,9 @@ namespace Homework05.API_Controllers
 
             var surveysForCoordinator = from survey_group in db.X_Survey_Groups.Include("Survey")
                                       join coordinator_group in db.X_Coordinator_Groups.Include("Coordinator") on survey_group.StudyGroupId equals coordinator_group.StudyGroupId
-                                      where coordinator_group.CoordinatorId.Equals(coordinatorId)
-                                      select new { survey_group, coordinator_group, Survey = survey_group.Survey, Coordinator = coordinator_group.Coordinator };
+                                       join studyGroup in db.StudyGroups on survey_group.StudyGroupId equals studyGroup.Id
+                                        where coordinator_group.CoordinatorId.Equals(coordinatorId)
+                                      select new { survey_group, coordinator_group, studyGroup, Survey = survey_group.Survey, Coordinator = coordinator_group.Coordinator };
 
 
           /*  var surveysForCoordinator = db.X_Survey_Groups
@@ -149,6 +150,7 @@ namespace Homework05.API_Controllers
                 {
                     SurveyId = s.survey_group.Id,
                     StudyGroupId = s.survey_group.StudyGroupId,
+                    StudyGroupName = s.studyGroup.StudyGroupName,
                     SurveyName = s.Survey.SurveyName,
                     StudyCoordinatorId = s.Coordinator.Id,
                     StudyCoordinatorName = s.Coordinator.UserName,
@@ -442,7 +444,7 @@ namespace Homework05.API_Controllers
                     }
                     catch (DbUpdateException)
                     {
-                        if (SurveyExists(survey.SurveyId))
+                        if (SurveyExists(survey.SurveyId.Value))
                         {
                             return Conflict();
                         }
@@ -521,8 +523,8 @@ namespace Homework05.API_Controllers
             {
                 var surveyToPublish = new X_Survey_Group
                 {
-                    SurveyId = surveyToSend.SurveyId,
-                    StudyGroupId = surveyToSend.StudyGroupId,
+                    SurveyId = surveyToSend.SurveyId.Value,
+                    StudyGroupId = surveyToSend.StudyGroupId.Value,
                     SurveyCreatedTime = DateTime.Now.ToString(),
                     FrequencyOfNotifications = surveyToSend.FrequencyOfNotifications,
                     Time1 = surveyToSend.Time1,

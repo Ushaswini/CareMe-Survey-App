@@ -13,76 +13,15 @@
             <p data-bind="text: $data" />
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="col" style="float:right; margin:10px">
-            <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#myModal">Add Question</button>
-            
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-
-                    
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Add Question</h4>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label data-bind="value: result" />
-                            </div>
-                            <div class="form-group error-messages" data-bind="foreach: errors">
-                                <p data-bind="text: $data" />
-                            </div>
-                        </div>
-
-                        <form data-bind="submit:AddQuestion">
-                            <div class="modal-body" style="float:left; clear:both;">
-
-                                <div class="form-row">
-                                    <div class="col" style="float:left; margin:10px">
-                                        <input type="text" data-bind="value: questionText" class="form-control" placeholder="Question Text">
-                                    </div>
-
-                                    <div class="col" style="float:left; margin:10px;">
-                                        <select id="questionType" class="form-control">
-                                            <option selected disabled>Question type</option>
-                                            <option value="0">TextEntry</option>
-                                            <option value="1">Choice</option>
-                                            <option value="2">Message</option>
-                                        </select>
-                                    </div>
-                                    <div class="col" style="float:left; margin:10px;">
-                                        <div id="options" class="col" style="visibility:hidden">
-                                            <input type="text" data-bind="value: options" class="form-control" placeholder="Comma seperated options">
-                                        </div>
-
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-
-                                <button type="submit" class="btn btn-default">Add</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="col-sm-12" style="float:left;margin-bottom:20px">
-        <h3>Publish Survey to Study Group</h3>
+        <h3>Publish Messages to Study Group</h3>
         <div class="col" style="float:left; margin:10px">
             <select class="form-control" data-bind="options: studyGroups,
                                                                         optionsCaption: 'Choose study group',
-                                                                        optionsText: 'StudyName',
-                                                                        optionsValue: 'StudyGroupId',
-                                                                        value: selectedStudyGroupForSurvey"></select>
+                                                                        optionsText: 'StudyGroupName',
+                                                                        optionsValue: 'Id',
+                                                                        value: selectedStudyGroupForQuestion"></select>
         </div>
         <div class="col" style="float:left; margin:10px">
             <select class="form-control" data-bind="options: questions,
@@ -109,8 +48,29 @@
                 <input type="time" title="second time slot" name="time2" value="12" style=" visibility:hidden">
             </form>
         </div>
-        <div class="col" style="float:left">
-            <button class="btn btn-style" style="float:left; height:34px" id="btnPublishQuestion">Publish</button>
+        <div class="col pull-right" style="float:left">
+            <button class="btn btn-style" style="float:left; height:34px" id="btnPublishQuestion">Publish Message</button>
+        </div>
+
+    </div>
+    <div class="col-sm-12" style="float:left;margin-bottom:20px">
+        <h3>Publish Survey to Study Group</h3>
+        <div class="col" style="float:left; margin:10px">
+            <select class="form-control" data-bind="options: studyGroups,
+                                                                        optionsCaption: 'Choose study group',
+                                                                        optionsText: 'StudyGroupName',
+                                                                        optionsValue: 'Id',
+                                                                        value: selectedStudyGroupForSurvey"></select>
+        </div>
+        <div class="col" style="float:left; margin:10px">
+            <select class="form-control" data-bind="options: AllSurveys,
+                                                                        optionsCaption: 'Choose Survey',
+                                                                        optionsText: 'SurveyName',
+                                                                        optionsValue: 'SurveyId',
+                                                                        value: selectedSurveyId"></select>
+        </div>
+        <div class="col pull-right" style="float:left">
+            <button class="btn btn-style" style="float:left; height:34px" id="btnPublishSurvey">Publish Survey</button>
         </div>
 
     </div>
@@ -119,7 +79,7 @@
         
    
 
-    <h3 style="margin-bottom:20px;margin-top:10px">Surveys Already Published</h3>
+    <h3 style="margin-bottom:20px;margin-top:10px">Already Published Items</h3>
     <table class="table table-hover table-bordered table-striped" id="surveysTable">
         <thead>
             <tr>

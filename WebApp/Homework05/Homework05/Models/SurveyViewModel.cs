@@ -28,8 +28,10 @@ namespace Homework05.Models
 
     public class PublishSurveyViewModel
     {
-        public int SurveyId { get; set; }
-        public int StudyGroupId { get; set; }
+        [Required]
+        public int? SurveyId { get; set; }
+        [Required]
+        public int? StudyGroupId { get; set; }
         public string SurveyCreatedTime { get; set; }
 
         //If survey type is message;these are valid
