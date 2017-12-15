@@ -82,9 +82,9 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 surveyResponse = new SurveyResponse();
-                surveyResponse.setSurveyId("3045b14f-74bc-4c93-99b7-c430660c6189");
+                //surveyResponse.setSurveyId("3045b14f-74bc-4c93-99b7-c430660c6189");
                 surveyResponse.setUserId("57aeef8f-3140-4295-87eb-8f304cd4cfe6");
-                surveyResponse.setStudyGroupId("1");
+                //surveyResponse.setStudyGroupId("1");
 
                 displayInfo1Survey();
             }
@@ -263,8 +263,8 @@ public class SurveyActivity extends AppCompatActivity {
             }
         }
 
-        surveyResponse.setUserResponseText(surveyAnswerArrayList);
-        surveyResponse.setSurveyResponseReceivedTime(new Date());
+        //surveyResponse.setUserResponseText(surveyAnswerArrayList);
+       // surveyResponse.setSurveyResponseReceivedTime(new Date());
 
         try {
             PostSurveyResponse(surveyResponse);
@@ -302,13 +302,13 @@ public class SurveyActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         DataObj data = new DataObj();
-        data.setUserResponseText(surveyResponse.getUserResponseText());
+        //data.setUserResponseText(surveyResponse.getUserResponseText());
         String surveyResponse_json = gson.toJson(data);
 
         RequestBody formBody = new FormBody.Builder()
-                .add("SurveyId", surveyResponse.getSurveyId())
+                //.add("SurveyId", surveyResponse.getSurveyId())
                 .add("UserId", surveyResponse.getUserId())
-                .add("StudyGroupId", surveyResponse.getStudyGroupId())
+               // .add("StudyGroupId", surveyResponse.getStudyGroupId())
                 .add("SurveyResponseReceivedTime", surveyResponse.getSurveyResponseReceivedTime())
                 .add("UserResponseText", surveyResponse_json)
                 .build();

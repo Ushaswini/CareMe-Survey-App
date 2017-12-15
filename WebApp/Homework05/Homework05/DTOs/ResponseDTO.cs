@@ -14,6 +14,9 @@ namespace Homework05.DTOs
         public string UserName { get; set; }
         public string StudyGroupName { get; set; }
         public string SurveyName { get; set; }
+        public int StudyGroupId { get; set; }
+
+        public SurveyType SurveyType { get; set; }
 
         public List<QuestionResponseDTO> QuestionResponses { get; set; }
 

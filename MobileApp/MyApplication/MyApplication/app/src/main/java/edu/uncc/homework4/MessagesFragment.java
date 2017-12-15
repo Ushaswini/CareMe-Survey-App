@@ -33,6 +33,7 @@ import java.util.TimeZone;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -121,15 +122,41 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                     JSONObject jsonObject = new JSONObject(myResponse);
                     JSONArray jsonArray = jsonObject.getJSONArray("SurveysResponded");
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        /*JSONObject jsonO = jsonArray.getJSONObject(i);
-                        SurveyQuestion sq = new SurveyQuestion();
-                        sq.setQuestion(jsonO.getString("QuestionText"));
-                        sq.setResponse(jsonO.getString("ResponseText"));
-                        sq.setSurveyId(jsonO.getString("SurveyId"));
-                        sq.setUserId(UserId);
-                        sq.setQuesType(jsonO.getInt("QuestionType"));
-                        sq.setSurveyTime(jsonO.getString("ResponseReceivedTime"));
-                        surveysList.add(sq);*/
+                        JSONObject jsonO = jsonArray.getJSONObject(i);
+
+                        Survey survey = new Survey();
+
+                        survey.setSurveyId(jsonO.getInt("SurveyId"));
+                        survey.setSurveyName(jsonO.getString("SurveyName"));
+                        survey.setSurveytype(jsonO.getInt("SurveyType"));
+
+                        ArrayList<SurveyQuestion> questions = new ArrayList<>();
+                       // SurveyQuestion question;
+                        JSONArray questionsJSONArray = jsonO.getJSONArray("QuestionResponses");
+
+                        for(int p =0;p< questionsJSONArray.length();p++ ){
+                            JSONObject questionJSON = questionsJSONArray.getJSONObject(p);
+                            SurveyQuestion question = new SurveyQuestion();
+                            question.setQuestionId(questionJSON.getInt("QuestionId"));
+                            question.setQuestionText(questionJSON.getString("QuestionText"));
+                            question.setQuestionType(questionJSON.getInt("QuestionType"));
+                            question.setOptions(questionJSON.getString("Options"));
+                            /*question.setMaximum(questionJSON.getDouble("Maximum"));
+                            question.setMinimum(questionJSON.getDouble("Minimum"));
+                            question.setStepsize(questionJSON.getDouble("StepSize"));*/
+                            Log.d("demo2",questionJSON.toString());
+                            question.setResponse(questionJSON.getString("ResponseText"));
+                            questions.add(question);
+                            Log.d("demo1", question.toString());
+                        }
+
+                        survey.setQuestions(questions);
+
+
+                        surveysList.add(survey);
+                        Log.d("demo","In responses" + surveysList.size());
+                        Log.d("demo",survey.toString());
+
                     }
                     JSONArray jsonArray1 = jsonObject.getJSONArray("Surveys");
                     for (int i = 0; i < jsonArray1.length(); i++) {
@@ -143,11 +170,11 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                         survey.setSurveytype(jsonO.getInt("SurveyType"));
 
                         ArrayList<SurveyQuestion> questions = new ArrayList<>();
-                        SurveyQuestion question;
+
                         JSONArray questionsJSONArray = jsonO.getJSONArray("Questions");
                         for(int p =0;p< questionsJSONArray.length();p++ ){
                             JSONObject questionJSON = questionsJSONArray.getJSONObject(p);
-                            question = new SurveyQuestion();
+                            SurveyQuestion question = new SurveyQuestion();
                             question.setQuestionId(questionJSON.getInt("Id"));
                             question.setQuestionText(questionJSON.getString("QuestionText"));
                             question.setQuestionType(questionJSON.getInt("QuestionType"));
@@ -168,6 +195,8 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                         sq.setResponse("");*/
                         surveysList.add(survey);
                     }
+
+                    Log.d("demo",surveysList.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -220,7 +249,8 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
         Survey data = surveyQuestionArrayList.get(position);
         String replyText = "";
         //TODO Based on survey type- respond
-       /* switch (data.QuestionType)
+        SurveyQuestion question = data.getQuestions().get(0);
+       switch (question.getQuestionType())
         {
             case Choice:
             {
@@ -235,19 +265,40 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
                 break;
             }
         }
+
+        Log.d("demo",replyText);
+
+       SurveyResponse response = new SurveyResponse(data.getSurveyId(),UserId,data.getStudyGroupId(),(new Date()).toString());
+       QuestionResponse quesResp = new QuestionResponse(question.getQuestionId(),replyText);
+       ArrayList<QuestionResponse> list = new ArrayList<>();
+       list.add(quesResp);
+       response.setQuestionResponses(list);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(response);
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, json);
+        Log.d("body",json);
+
+       /*RequestBody responseBody = new FormBody.Builder()
+               .add("QuestionId",question.getQuestionId()+"" )
+               .add("ResponseText",replyText).build();
+
         RequestBody formBody = new FormBody.Builder()
-                .add("UserId", data.getUserId())
-                .add("StudyGroupId", data.getStudyGrpId())
-                .add("SurveyId", data.getSurveyId())
-                .add("UserResponseText",replyText )
-                .add("SurveyResponseReceivedTime", (new Date()).toString())
+                .add("UserId", UserId)
+                .add("StudyGroupId", data.getStudyGroupId() + "")
+                .add("SurveyId", data.getSurveyId() + "")
+                .add("Responses[0]",responseBody.toString() )
+                .add("ResponseReceivedTime", (new Date()).toString())
                 .build();
 
+        Log.d("demo",formBody.toString());*/
         Request request = new Request.Builder()
                 .url(Constants.POST_RESPONSE_URL)
-                .header("Content-Type","application/x-www-form-urlencoded")
+                //.header("Content-Type","application/json")
                 .header("Authorization", "Bearer "+access_token)
-                .post(formBody)
+                .post(body)
                 .build();
 
 
@@ -263,9 +314,10 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerAdapte
             public void onResponse(Call call, Response response) throws IOException {
                 // Toast.makeText(getContext(),"Response sent successfully !!",Toast.LENGTH_SHORT);
                 Log.d("demo","response success");
+                Log.d("response", response.message());
                 GetSurveysAsync();
             }
-        });*/
+        });
 
 
 
