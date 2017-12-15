@@ -1,17 +1,15 @@
 ﻿
 @section Scripts {
-    @Scripts.Render("~/bundles/ResourceManage")
-    @Scripts.Render("~/bundles/auth")
+    @Scripts.Render("~/bundles/Questions")
 }
 
 <div class="row">
     <div class="col-sm-12">
         <div class="col" style="float:right; margin:10px">
-            <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#myModal">Add Item</button>
+            <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#addQuestionModel">Add Item</button>
 
-            <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal fade" id="addQuestionModel" role="dialog">
                 <div class="modal-dialog">
-
 
                     <div class="modal-content">
                         <div class="modal-header">
@@ -41,18 +39,16 @@
                                             <option value="0">TextEntry</option>
                                             <option value="1">Choice</option>
                                             <option value="2">Scale</option>
-                                            <option value="1">Info</option>
+                                            <option value="3">Info</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-row">
+                                <div id="options" class="form-row" style="visibility:hidden">
                                     <div class="col" style="float:left; margin:10px;">
-                                        <div id="options" class="col" style="visibility:hidden">
                                             <input type="text" data-bind="value: options" class="form-control" placeholder="Comma seperated options">
-                                        </div>
                                     </div>
                                 </div>
-                                <div id="likeScaleProperties" class="form-row" style="clear:both">
+                                <div id="likeScaleProperties" class="form-row" style="clear:both; visibility:hidden">
                                     <div class="col" style="float:left; margin:10px">
                                         <input class="form-control" type="text" data-bind="value: minBound" placeholder="Minimum bound">
                                     </div>
@@ -83,6 +79,7 @@
             <thead>
                 <tr>
                     <th>Questions Text</th>
+                    <th>Type</th>
                 </tr>
             </thead>
         </table>

@@ -20,19 +20,7 @@
             columns: [{ data: "UserName" }]
         });
 
-    self.questionsDataTable = $("#questionsTable").DataTable(
-        {
-            select: true,
-            data: self.questions,
-            dom: 'Bfrtip',
-            buttons: [
-                'print'
-            ],
-            columns: [{ data: "QuestionText" }]
-        });
-
     LoadStudyGroups();
-    LoadQuestions();
     LoadUsers();
 
     function LoadUsers() {
@@ -78,51 +66,7 @@
             }
         }).fail(showError);
     }
-    function LoadQuestions() {
-        console.log("loading questions");
-        var headers = {};
-        var token = sessionStorage.getItem(tokenKey);
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-        console.log(token);
-        $.ajax({
-            type: 'GET',
-            url: '/api/Questions',
-            headers: headers,
-            contentType: 'application/json; charset=utf-8'
-        }).done(function (data) {
-            console.log(data);
-            self.questions = data;
-            /*for (var i = 0; i < data.length; i++) {
-                self.questions.push(data[i]);
-            }*/
-            BindQuestionsToDataTable();
-        }).fail(showError);
-    }
-
-    function BindQuestionsToDataTable(data) {
-        console.log(self.users);
-        self.questionsDataTable.clear();
-        self.questionsDataTable.destroy();
-        self.questionsDataTable = $("#questionsTable").DataTable(
-            {
-                select: true,
-                data: self.questions,
-                dom: 'Bfrtip',
-                buttons: [
-                    'print'
-                ],
-                columns: [{ data: "QuestionText" }]
-            });
-       /* $('#questionsTable tbody').on('click', 'tr', function () {
-            var data = self.questionsDataTable.row(this).data();
-            //alert('You clicked on ' + data + '\'s row');
-            console.log(data.Id);
-            sessionStorage.setItem('user', data.Id);
-            window.location.href = yourApp.Urls.userMessagesUrl;
-        });*/
-    }
+    
     function BindUsersToDatatable(data) {
         console.log(self.users);
         self.usersDataTable.clear();
@@ -145,25 +89,6 @@
             window.location.href = yourApp.Urls.userMessagesUrl;
         });
     }
-    $('#questionType').on('change', function () {
-        console.log("in change");
-        if (this.value == 0) {
-            $('#options').css('visibility', 'hidden');
-            $('#likeScaleProperties').css('visibility', 'hidden');
-        }
-        if (this.value == 1) {
-            $('#options').css('visibility', 'visible');
-            $('#likeScaleProperties').css('visibility', 'hidden');
-        }
-        if (this.value == 2) {
-            $('#options').css('visibility', 'hidden');
-            $('#likeScaleProperties').css('visibility', 'visible');
-        }
-        if (this.value == 3) {
-            $('#options').css('visibility', 'hidden');
-            $('#likeScaleProperties').css('visibility', 'hidden');
-        }
-    })
 
     $('input[name=frequency]').change(function () {
         var value = $('input[name=frequency]:checked').val();
@@ -269,19 +194,12 @@
         self.userConfirmPassword = ko.observable();
         self.studyGroups = ko.observableArray([]);
         self.users = {}
-        self.questions = {}
         self.userEmail = ko.observable();
         self.selectedStudyGroup = ko.observable();
         self.selectedStudyGroupForSurvey = ko.observable();
-        self.options = ko.observable();
-        self.minBound = ko.observable();
-        self.maxBound = ko.observable();
-        self.interval = ko.observable();
 
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
-        self.questionText = ko.observable();
-        self.options = ko.observable();
        
 
         self.AddUser = function () {
@@ -347,40 +265,6 @@
                 LoadUsers();
             }).fail(showError);
         }
-
-        self.AddQuestion = function () {
-            console.log($('#questionType').val());
-            var data = {
-                QuestionText: self.questionText(),
-                QuestionType: $('#questionType').val(),
-                Options: self.options(),
-                Minimum: self.minBound(),
-                Maximum: self.options(),
-                StepSize: self.interval(),
-                QuestionId: guid()
-
-            };
-            var headers = {};
-            var token = sessionStorage.getItem(tokenKey);
-            if (token) {
-                headers.Authorization = 'Bearer ' + token;
-            }
-            console.log("Data to add" + data);
-            $.ajax({
-                type: 'POST',
-                url: '/api/Questions',
-                headers: headers,
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function (data) {
-                self.result("Done!");
-
-                $('#myModal').modal('toggle');
-                //Load questions
-                LoadQuestions();
-            }).fail(showError);
-        }
-
       
     }
 
