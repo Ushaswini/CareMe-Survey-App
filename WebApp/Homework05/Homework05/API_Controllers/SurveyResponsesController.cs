@@ -16,7 +16,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace Homework05.API_Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,StudyCoordinator")]
     [RoutePrefix("api/SurveyResponses")]
     public class SurveyResponsesController : ApiController
     {
@@ -250,7 +250,7 @@ namespace Homework05.API_Controllers
         [Route("CoordinatorSurveyResponses")]
         //Get responses for a coordinator
         [ResponseType(typeof(SurveyResponse))]
-        public IList<ResponseDTO> GetResponsesForStudyCoordinator(int coordinatorId)
+        public IList<ResponseDTO> GetResponsesForStudyCoordinator(string coordinatorId)
         {
             List<ResponseDTO> responses = new List<ResponseDTO>();
 

@@ -8,6 +8,10 @@
     var userRole = sessionStorage.getItem("userRole");
     var userId = sessionStorage.getItem("userId");
 
+    alert(userRole);
+
+    console.log("aove table");
+
     self.responsesTable = $("#responsesTable").DataTable(
         {
             select: true,

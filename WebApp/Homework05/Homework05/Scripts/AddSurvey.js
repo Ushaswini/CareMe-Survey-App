@@ -45,7 +45,7 @@
         console.log(token);
         $.ajax({
             type: 'GET',
-            url: '/api/Questions',
+            url: '/api/Questions/GetSurveyQuestions',
             headers: headers,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {

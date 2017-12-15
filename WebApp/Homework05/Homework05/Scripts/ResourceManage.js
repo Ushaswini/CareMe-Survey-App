@@ -14,7 +14,8 @@
             buttons: [
                 'print'
             ],
-            columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
+            columns: [{ data: "StudyGroupName" }, { data: "SurveyName" }, { data: "UserName" }, { data: "SurveyType" }]
+            //columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
         });
     LoadAllResponses();
     LoadStudyGroups();
@@ -95,7 +96,7 @@
                 buttons: [
                     'print'
                 ],
-                columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
+                columns: [{ data: "StudyGroupName" }, { data: "SurveyName" }, { data: "UserName" }, { data: "SurveyType" }]
             });
     }
 

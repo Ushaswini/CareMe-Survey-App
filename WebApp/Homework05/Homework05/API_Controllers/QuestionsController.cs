@@ -13,6 +13,7 @@ using Homework05.Models;
 namespace Homework05.API_Controllers
 {
     [Authorize(Roles ="Admin,StudyCoordinator")]
+    [RoutePrefix("api/Questions")]
     public class QuestionsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -21,6 +22,14 @@ namespace Homework05.API_Controllers
         public List<QuestionViewModel> GetQuestions()
         {
             var questions = db.Questions.ToList();
+            var data = questions.Select(q => GetViewModel(q)).ToList();
+            return data;
+        }
+
+        [Route("GetSurveyQuestions")]
+        public List<QuestionViewModel> GetSurveyQuestions()
+        {
+            var questions = db.Questions.Where(q => q.QuestionType != QuestionType.Info).ToList();
             var data = questions.Select(q => GetViewModel(q)).ToList();
             return data;
         }
@@ -42,7 +51,7 @@ namespace Homework05.API_Controllers
 
         // GET: api/Questions/5
         [ResponseType(typeof(Question))]
-        public IHttpActionResult GetQuestion(string id)
+        public IHttpActionResult GetQuestion(int id)
         {
             Question question = db.Questions.Find(id);
             if (question == null)
