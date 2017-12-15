@@ -12,7 +12,7 @@ using Homework05.Models;
 
 namespace Homework05.API_Controllers
 {
-    [Authorize(Roles ="Admin, StudyCoordinator")]
+    [Authorize(Roles ="Admin,StudyCoordinator")]
     public class QuestionsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -127,17 +127,38 @@ namespace Homework05.API_Controllers
                         ModelState.AddModelError("StepSize", "Max should be greater than Min");
                         hasError = true;
                     }
-                    if (question.StepSize < question.Minimum && question.StepSize > question.Maximum)
+                    if (question.StepSize < question.Minimum && question.StepSize > question.Maximum || question.StepSize == 0)
                     {
                         ModelState.AddModelError("StepSize", "Step Size should be in the range of Min and Max");
                         hasError = true;
 
                     }
-                    if (((question.Maximum - question.Minimum) / question.StepSize) > 10)
+
+                    if (question.StepSize != 0)
                     {
-                        ModelState.AddModelError("StepSize", "No of steps should be less than 10");
+                        if (((question.Maximum - question.Minimum) / question.StepSize) > 10 || ((question.Maximum - question.Minimum) / question.StepSize) < 2)
+                        {
+                            ModelState.AddModelError("StepSize", "No of steps should be greater than 2 and less than 10");
+                            hasError = true;
+                        }
+
+                        if (((question.Maximum - question.Minimum) % question.StepSize) != 0)
+                        {
+                            ModelState.AddModelError("StepSize", "Invalid stepsize");
+                            hasError = true;
+                        }
+                    }
+
+
+                    break;
+
+                case "Choice":
+                    if (question.Options == null || question.Options.Split(',').Length < 2)
+                    {
+                        ModelState.AddModelError("Options", "Min Two options should be present");
                         hasError = true;
                     }
+
 
                     break;
             }

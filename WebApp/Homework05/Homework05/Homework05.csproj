@@ -333,6 +333,7 @@
     <None Include="Properties\PublishProfiles\CareMe-SurveyPart2 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CareMeSurvey-NC - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\AddQuestion.js" />
     <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\DataTables\buttons.datatables.css" />
     <Content Include="Scripts\DataTables\buttons.datatables.js" />
