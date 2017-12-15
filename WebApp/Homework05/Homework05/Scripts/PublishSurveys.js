@@ -178,7 +178,7 @@
         }
         var date = new Date();
         var surveyData = {
-            SurveyId: selectedQuestionId(),            
+            SurveyId: self.selectedQuestionId(),            
             StudyGroupId: self.selectedStudyGroupForQuestion(),
             SurveyCreatedTime: date.toString(),
             FrequencyOfNotifications: frequencyOfNotifications,
@@ -189,7 +189,7 @@
         console.log(JSON.stringify(surveyData));
         $.ajax({
             type: 'POST',
-            url: '/api/Surveys/Publish',
+            url: '/api/Surveys/PublishQuestion',
             headers: headers,
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(surveyData)
