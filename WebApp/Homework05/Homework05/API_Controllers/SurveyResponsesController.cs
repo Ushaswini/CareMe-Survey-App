@@ -11,6 +11,8 @@ using System.Web.Http.Description;
 using Homework05.Models;
 using Homework05.DTOs;
 using System.Data.Entity.Validation;
+using Homework05.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Homework05.API_Controllers
 {
@@ -19,16 +21,91 @@ namespace Homework05.API_Controllers
     public class SurveyResponsesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationRoleManager _AppRoleManager = null;
 
+        protected ApplicationRoleManager AppRoleManager
+        {
+            get
+            {
+                return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+        }
         //Get responses for a study group
         //Get responses for a study coordinator
         //Get responses for a user
         //Get responses of a survey
 
         // GET: api/SurveyResponses
+
         public IList<ResponseDTO> GetSurveyResponses()
         {
+            List<ResponseDTO> responses = new List<ResponseDTO>();
             var ques = db.SurveyResponses.GroupBy(r => r.SurveyId);
+
+            string roleName = "StudyCoordinator";
+            var role = AppRoleManager.Roles.Single(r => r.Name == roleName);
+            var coordinators = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).ToList();
+
+            foreach(var coordinator in coordinators)
+            {
+                var idsOfSurveysForCoordinator = from s in db.X_Coordinator_Groups
+
+                                                 join g in db.X_Survey_Groups.Include("Survey") on s.Id equals g.StudyGroupId
+
+                                                 where s.CoordinatorId.Equals(coordinator.Id)
+
+                                                 select g.Id;
+
+                foreach (var surveyId in idsOfSurveysForCoordinator.ToList())
+                {
+                    var responseList = from response in db.SurveyResponses.Include("Survey").Include("Question").Include("User")
+                                       join question in db.Questions on response.QuestionId equals question.Id
+                                       join survey in db.X_Survey_Groups.Include("Survey").Include("StudyGroup") on response.SurveyId equals survey.Id
+                                       join study in db.StudyGroups on survey.StudyGroupId equals study.Id
+                                       join user in db.Users on response.UserId equals user.Id
+                                       where response.SurveyId == surveyId
+                                       select new { response, question, survey, surveyObj = survey.Survey, study, user }
+                                           ;
+                    var groupedResponses = responseList.GroupBy(p => p.response.SurveyId, p => new { p.response, p.question, p.survey, p.surveyObj, p.study, p.user }, (key, g) => new { SurveyId = key, Value = g.ToList() }).ToList();
+                    List<QuestionResponseDTO> questions = new List<QuestionResponseDTO>();
+                    foreach (var r in groupedResponses)
+                    {
+                        questions.Clear();
+                        foreach (var p in r.Value.ToList())
+                        {
+
+                            var questionDTO = new QuestionResponseDTO
+                            {
+                                ResponseReceivedTime = p.response.ResponseReceivedTime,
+                                ResponseText = p.response.ResponseText,
+                                QuestionText = p.question.QuestionText,
+                                QuestionId = p.question.Id,
+                                QuestionType = p.question.QuestionType,
+                                QuestionFrequency = p.survey.FrequencyOfNotifications + "",
+                                Options = p.question.Options,
+
+                            };
+                            questions.Add(questionDTO);
+
+                        }
+
+                        var responseDTO = new ResponseDTO
+                        {
+                            SurveyId = r.Value.ElementAt(0).response.SurveyId,
+                            SurveyName = r.Value.ElementAt(0).surveyObj.SurveyName,
+                            UserName = r.Value.ElementAt(0).user.UserName,
+                            QuestionResponses = questions,
+                            StudyGroupName = r.Value.ElementAt(0).study.StudyGroupName,
+                            StudyCoordinatorName = coordinator.UserName
+
+                        };
+
+                        responses.Add(responseDTO);
+                    }
+                }
+            }
+
+            
             /* var result = db.SurveyResponses.Include(r => r.StudyGroup)
                                             .Include(r => r.Survey)
                                             .Include(r => r.Survey.Question)
@@ -51,7 +128,7 @@ namespace Homework05.API_Controllers
                                              });
              return result.ToList();*/
 
-            return null;
+            return responses;
         }
 
         [Route("StudyResponses")]
