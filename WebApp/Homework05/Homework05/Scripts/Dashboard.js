@@ -180,92 +180,6 @@
         }).fail(showError);
     }
 
-    $('input[name=frequency]').change(function () {
-        var value = $('input[name=frequency]:checked').val();
-        if (value == "0") {
-            $('input[name=time1]').css('visibility', 'visible');
-            $('input[name=time2]').css('visibility', 'hidden');
-        }
-        else if (value == "2") {
-            $('input[name=time1]').css('visibility', 'visible');
-            $('input[name=time2]').css('visibility', 'visible');
-        }
-        else {
-            $('input[name=time1]').css('visibility', 'hidden');
-            $('input[name=time2]').css('visibility', 'hidden');
-        }
-    });
-
-     $("#btnPublishQuestion").click(function () {
-        var frequencyOfNotifications = $('input[name=frequency]:checked').val();
-
-        var questionText = $('input[name=txtQuestion]').val();
-
-        if (questionText == undefined || questionText == "") {
-            alert("Please Enter question Text");
-            return;
-        }
-        if (questionText.length == 20) {
-            alert("Question should have atleast 20 characters");
-            return;
-        }
-
-        if (frequencyOfNotifications == undefined) {
-            alert("Please select frequency of Notification");
-            return;
-        }
-        var time1, time2;
-        if (frequencyOfNotifications == "0") {
-            time1 = $('input[name=time1]').val();
-
-            if (time1 == undefined || time1 == "") {
-                alert("Please Enter time slot of Notification");
-                return;
-            }
-            time2 = "";
-        }
-        else if (frequencyOfNotifications == "2") {
-            time1 = $('input[name=time1]').val();
-            time2 = $('input[name=time2]').val();
-
-            if (time1 == undefined || time1 == "" || time2 == undefined || time2 == "") {
-                alert("Please Enter time slot of Notification");
-                return;
-            }
-        }
-        var tokenKey = 'accessToken';
-        var headers = {};
-        var token = sessionStorage.getItem(tokenKey);
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-        var date = new Date();
-        var surveyData = {
-            SurveyId: guid(),
-            QuestionText: questionText,
-            StudyGroupId: self.selectedStudyGroupForSurvey(),
-            SurveyCreatedTime: date.toString(),
-            FrequencyOfNotifications: frequencyOfNotifications,
-            Time1: time1.toString(),
-            Time2: time2.toString()
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: '/api/Surveys',
-            headers: headers,
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(surveyData)
-
-        }).done(function (data) {
-            console.log("data is received");
-
-        }).fail(showError);
-
-
-
-    })
-
 
     function guid() {
         function s4() {
@@ -341,7 +255,7 @@
             console.log("Data to add" + data);
             $.ajax({
                 type: 'POST',
-                url: '/api/Account/AddStudyCoordinator',
+                url: '/api/Account/AddUser',
                 headers: headers,
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
