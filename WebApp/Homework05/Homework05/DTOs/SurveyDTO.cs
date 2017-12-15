@@ -28,6 +28,15 @@ namespace Homework05.DTOs
         public double Minimum { get; set; }
         public double Maximum { get; set; }
         public double StepSize { get; set; }
+
+        private string optionsString;
+        public string OptionsString {
+            get {
+                return QuestionType == QuestionType.Choice ? Options : QuestionType == QuestionType.Scale ? Minimum + ":" + Maximum + ":" + StepSize : "Text Entry";
+            }
+            set {
+                this.optionsString = value;
+            } }
     }
 
     public class StudyGroupDTO

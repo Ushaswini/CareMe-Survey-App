@@ -15,7 +15,22 @@
             buttons: [
                 'print'
             ],
-            columns: [{ data: "SurveyId" },{ data: "SurveyName" }]
+            columns: [{ data: "SurveyId" }, { data: "SurveyName" },
+            {
+                "title": "Questions",
+                "data": "Questions",
+                "render": function (d) {
+                    if (d !== null) {
+                        var table = "<table>";
+                        $.each(d, function (k, v) {
+                            table += "<tr><td>" + v.QuestionText + "</td><td>" + "-" + "</td><td>" + v.Options + "</td></tr>";
+                        });
+                        return table + "</table>";
+                    } else {
+                        return "";
+                    }
+                }
+            }]
         });
 
     self.questionsDataTable = $("#questionsTable").DataTable(
@@ -87,7 +102,22 @@
                 buttons: [
                     'print'
                 ],
-                columns: [{ data: "SurveyId" },{ data: "SurveyName" }]
+                columns: [{ data: "SurveyId" }, { data: "SurveyName" },
+                {
+                    "title": "Questions",
+                    "data": "Questions",
+                    "render": function (d) {
+                        if (d !== null) {
+                            var table = "<table>";
+                            $.each(d, function (k, v) {
+                                table += "<tr><td>" + v.QuestionText + "</td><td>" + "-" + "</td><td>" + v.OptionsString + "</td></tr>";
+                            });
+                            return table + "</table>";
+                        } else {
+                            return "";
+                        }
+                    }
+                }]
             });
     }
 
